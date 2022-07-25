@@ -14,18 +14,22 @@ class _TodoScreenState extends State<TodoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverPersistentHeader(
-            pinned: true,
-            delegate: TodoListHeader(minimumExtent: 120, maximumExtent: 230),
-          ),
-          const SliverToBoxAdapter(
+      body: RefreshIndicator(
+        onRefresh: () async {  },
+        child: CustomScrollView(
+          slivers: [
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: TodoListHeader(minimumExtent: 120, maximumExtent: 230),
+            ),
+            const SliverToBoxAdapter(
               child: Padding(
-            padding: EdgeInsets.only(top: 20, bottom: 50, left: 8, right: 8),
-            child: TodoList(),
-          )),
-        ],
+                padding: EdgeInsets.only(top: 20, bottom: 50, left: 8, right: 8),
+                child: TodoList(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

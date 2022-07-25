@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/components/shared/medium_label.dart';
+import 'package:todo_list/models/todo_model.dart';
 
 class TodoListItem extends StatefulWidget {
-  const TodoListItem({Key? key}) : super(key: key);
+  final TodoModel model;
+
+  const TodoListItem({required this.model, Key? key}) : super(key: key);
 
   @override
   State<TodoListItem> createState() => _TodoListItemState();
@@ -36,8 +39,9 @@ class _TodoListItemState extends State<TodoListItem> {
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.6,
-                  child: const MediumLabel("Купить что то"),
+                  child: MediumLabel(widget.model.text),
                 ),
+                //todo: show date if exists, importance, show checked, make dismiss
                 const Icon(Icons.info_outline)
               ],
             ),

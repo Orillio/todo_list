@@ -1,5 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:todo_list/components/shared/large_title.dart';
+import 'package:flutter/rendering.dart';
 import 'package:todo_list/components/shared/small_label.dart';
 
 class TodoListHeader extends SliverPersistentHeaderDelegate {
@@ -11,11 +13,21 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
     required this.maximumExtent,
   });
 
+
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+
+    double negativeRelationValue = (1 - (shrinkOffset / (maxExtent - minExtent))).clamp(0, 1);
+    double positiveRelationValue = (shrinkOffset / (maxExtent - minExtent)).clamp(0, 1);
+
+    double bottomPadding = lerpDouble(0, 26, negativeRelationValue)!;
+    double leftPadding = lerpDouble(20, 65, negativeRelationValue)!;
+    double titleFontSize = lerpDouble(20, 32, negativeRelationValue)!;
+    double labelOpacity = negativeRelationValue;
+    double backgroundOpacity = positiveRelationValue;
+    double visibilityIconOffset = lerpDouble(-30, 0, negativeRelationValue)!;
+
     return Stack(
-      fit: StackFit.expand,
       children: [
         Positioned(
           bottom: 0,
@@ -26,21 +38,38 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
               color: Theme.of(context)
                   .appBarTheme
                   .backgroundColor!
-                  .withOpacity((shrinkOffset / minimumExtent).clamp(0, 1)),
+                  .withOpacity(backgroundOpacity),
             ),
-            padding: const EdgeInsets.only(bottom: 26, right: 20, left: 60),
+            padding: EdgeInsets.only(bottom: bottomPadding, right: 25, left: leftPadding),
             height: maxExtent,
             child: Align(
               alignment: Alignment.bottomLeft,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  LargeTitle(
-                    title: "Мои дела",
+                children: [
+                  Text(
+                    "Мои дела",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: titleFontSize
+                    ),
                   ),
-                  SmallLabel(
-                    "Выполнено - 5",
+                  const SizedBox(height: 10,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Opacity(
+                        opacity: labelOpacity,
+                        child: const SmallLabel(
+                          "Выполнено - 5",
+                        ),
+                      ),
+                      Transform.translate(
+                        offset: Offset(0, visibilityIconOffset),
+                        child: const Icon(Icons.visibility),
+                      ),
+                    ]
                   ),
                 ],
               ),
@@ -60,4 +89,11 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
       true;
+
+
+
+  @override
+  OverScrollHeaderStretchConfiguration get stretchConfiguration =>
+      OverScrollHeaderStretchConfiguration();
+
 }

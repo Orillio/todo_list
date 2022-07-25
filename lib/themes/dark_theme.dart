@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 ThemeData darkTheme = ThemeData(
+    buttonTheme: const ButtonThemeData(
+      buttonColor: Color(0xFF0A84FF)
+    ),
     scaffoldBackgroundColor: const Color(0xFF161618),
     brightness: Brightness.dark,
     colorScheme: const ColorScheme.dark(secondary: Color(0xFF252528)),
