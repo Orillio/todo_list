@@ -23,25 +23,10 @@ class _TodoScreenState extends State<TodoScreen> {
           ),
           const SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
+              padding: EdgeInsets.only(top: 20, bottom: 50, left: 8, right: 8),
               child: TodoList(),
             )
           ),
-          // SliverToBoxAdapter(
-          //   child: Container(
-          //     child: ListView.builder(
-          //       physics: NeverScrollableScrollPhysics(),
-          //       shrinkWrap: true,
-          //       itemCount: 50,
-          //       itemBuilder: (context, index) {
-          //         return const Padding(
-          //           padding: EdgeInsets.all(10),
-          //           child: Text("1 thing to do is to do"),
-          //         );
-          //       },
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );

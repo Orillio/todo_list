@@ -14,6 +14,10 @@ ThemeData darkTheme = ThemeData(
     backgroundColor: Color(0xFF252528)
   ),
 
+  iconTheme: const IconThemeData(
+    color: Color(0x33FFFFFF)
+  ),
+
   textTheme: const TextTheme(
     titleLarge: TextStyle(
       fontSize: 32,
@@ -23,6 +27,11 @@ ThemeData darkTheme = ThemeData(
       fontSize: 16,
       letterSpacing: 0,
       color: Color(0x66FFFFFF)
-    )
+    ),
+    labelMedium: TextStyle(
+      fontSize: 16,
+      letterSpacing: 0,
+      color: Colors.white
+    ),
   )
 );
