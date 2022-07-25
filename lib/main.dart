@@ -8,16 +8,13 @@ void main() {
   runApp(const MyApp());
 }
 
-class TodoListChangeNotifierModel extends ChangeNotifier {
-
-}
+class TodoListChangeNotifierModel extends ChangeNotifier {}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     //Wrapping MaterialApp in MultiProvider to access models in all routes.
     return MultiProvider(
       providers: [
@@ -28,7 +25,7 @@ class MyApp extends StatelessWidget {
         title: 'TodoList',
         themeMode: ThemeMode.dark,
         darkTheme: darkTheme,
-        home: TodoScreen(),
+        home: const TodoScreen(),
       ),
     );
   }

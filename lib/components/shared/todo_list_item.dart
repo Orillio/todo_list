@@ -36,9 +36,9 @@ class _TodoListItemState extends State<TodoListItem> {
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.6,
-                  child: MediumLabel("Купить что то"),
+                  child: const MediumLabel("Купить что то"),
                 ),
-                Icon(Icons.info_outline)
+                const Icon(Icons.info_outline)
               ],
             ),
           ),

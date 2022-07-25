@@ -13,16 +13,15 @@ class _TodoListState extends State<TodoList> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Theme.of(context).colorScheme.secondary
-      ),
+          borderRadius: BorderRadius.circular(8),
+          color: Theme.of(context).colorScheme.secondary),
       child: ListView.builder(
         padding: const EdgeInsets.all(0),
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: 50,
         itemBuilder: (context, index) {
-          return TodoListItem();
+          return const TodoListItem();
         },
       ),
     );

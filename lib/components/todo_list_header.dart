@@ -23,10 +23,12 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
           left: 0,
           child: Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).appBarTheme.backgroundColor!
+              color: Theme.of(context)
+                  .appBarTheme
+                  .backgroundColor!
                   .withOpacity((shrinkOffset / minimumExtent).clamp(0, 1)),
             ),
-            padding: EdgeInsets.only(bottom: 26, right: 20, left: 60),
+            padding: const EdgeInsets.only(bottom: 26, right: 20, left: 60),
             height: maxExtent,
             child: Align(
               alignment: Alignment.bottomLeft,
@@ -34,8 +36,12 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  LargeTitle(title: "Мои дела",),
-                  SmallLabel("Выполнено - 5",),
+                  LargeTitle(
+                    title: "Мои дела",
+                  ),
+                  SmallLabel(
+                    "Выполнено - 5",
+                  ),
                 ],
               ),
             ),
