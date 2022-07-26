@@ -20,14 +20,20 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<ITodoProvider>(create: (_) => FakeTodoProvider()),
-        Provider(create: (_) => NavigationController()),
+        ListenableProvider(create: (_) => NavigationController()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'TodoList',
-        themeMode: ThemeMode.dark,
-        darkTheme: darkTheme,
-        home: const TodoScreen(),
+      child: Builder(
+        builder: (context) {
+          var navProvider = context.read<NavigationController>();
+          return MaterialApp(
+            navigatorKey: navProvider.key,
+            debugShowCheckedModeBanner: false,
+            title: 'TodoList',
+            themeMode: ThemeMode.dark,
+            darkTheme: darkTheme,
+            home: const TodoScreen(),
+          );
+        },
       ),
     );
   }

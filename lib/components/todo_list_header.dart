@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/business/i_todo_provider.dart';
 import 'package:todo_list/components/shared/medium_label.dart';
+import 'package:todo_list/themes/dark_theme.dart';
 
 class TodoListHeader extends SliverPersistentHeaderDelegate {
   final double maximumExtent;
@@ -71,7 +72,7 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
                       ),
                       Transform.translate(
                         offset: Offset(0, visibilityIconOffset),
-                        child: const Icon(Icons.visibility),
+                        child: const Icon(Icons.visibility, color: ConstColors.colorBlue,),
                       ),
                     ]
                   ),

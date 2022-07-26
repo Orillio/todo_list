@@ -36,6 +36,7 @@ class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
 
   @override
   Future deleteItem(TodoModel item) async {
+    await Future.delayed(const Duration(milliseconds: 200));
     _items.remove(item);
     notifyListeners();
   }
@@ -47,6 +48,7 @@ class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
 
   @override
   Future<List<TodoModel>> getItemsFromNetwork() async {
+    await Future.delayed(Duration(seconds: 2));
     return _items;
   }
 
@@ -64,8 +66,9 @@ class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
 
   @override
   Future updateItem(TodoModel item) async {
-    _items.removeWhere((i) => i.id == item.id);
-    _items.add(item);
+    await Future.delayed(const Duration(milliseconds: 150));
+    var model = _items.where((i) => i.id == item.id).first;
+    model = item;
     notifyListeners();
   }
 

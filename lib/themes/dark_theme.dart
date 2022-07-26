@@ -8,6 +8,11 @@ ThemeData darkTheme = ThemeData(
   primaryColorDark: ConstColors.backPrimary,
   appBarTheme: const AppBarTheme(backgroundColor: ConstColors.backSecondary),
   iconTheme: const IconThemeData(color: ConstColors.supportSeparator),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    backgroundColor: ConstColors.colorBlue,
+  ),
+
+
   textTheme: const TextTheme(
     titleLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.w500),
     labelSmall: TextStyle(

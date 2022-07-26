@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_list/business/i_todo_provider.dart';
 import 'package:todo_list/components/shared/medium_title.dart';
 import 'package:todo_list/components/shared/small_label.dart';
 import 'package:todo_list/models/todo_model.dart';
@@ -47,7 +49,6 @@ class _TodoListItemState extends State<TodoListItem> {
       );
     }
   }
-
   ThemeData _checkboxTheme() {
     return darkTheme.copyWith(
       checkboxTheme: CheckboxThemeData(
@@ -68,11 +69,12 @@ class _TodoListItemState extends State<TodoListItem> {
       ),
     );
   }
-
   String dateToString(DateTime date) => DateFormat('dd.MM.yyyy').format(date);
+
 
   @override
   Widget build(BuildContext context) {
+    var model = context.read<ITodoProvider>();
     return Dismissible(
       background: Container(
         alignment: Alignment.centerLeft,
@@ -92,6 +94,22 @@ class _TodoListItemState extends State<TodoListItem> {
           color: Colors.white,
         ),
       ),
+      confirmDismiss: (direction) async {
+        if(direction == DismissDirection.startToEnd) {
+          model.updateItem(
+            widget.model.changeFields(
+              done: true,
+            )
+          );
+          return false;
+        }
+        else {
+          model.deleteItem(
+            widget.model
+          );
+          return true;
+        }
+      },
       key: UniqueKey(),
       child: Padding(
         padding:
@@ -109,7 +127,13 @@ class _TodoListItemState extends State<TodoListItem> {
                   child: Checkbox(
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     value: widget.model.done,
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      model.updateItem(
+                        widget.model.changeFields(
+                          done: value,
+                        )
+                      );
+                    },
                   ),
                 ),
               ),
