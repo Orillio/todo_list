@@ -11,6 +11,24 @@ ThemeData darkTheme = ThemeData(
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: ConstColors.colorBlue,
   ),
+  switchTheme: SwitchThemeData(
+    thumbColor: MaterialStateProperty.resolveWith((states) {
+      if(states.contains(MaterialState.selected)) {
+        return ConstColors.colorBlue;
+      }
+      else {
+        return ConstColors.backElevated;
+      }
+    }),
+    trackColor: MaterialStateProperty.resolveWith((states) {
+      if(states.contains(MaterialState.selected)) {
+        return ConstColors.colorBlue.withOpacity(0.3);
+      }
+      else {
+        return ConstColors.supportOverlay;
+      }
+    }),
+  ),
 
 
   textTheme: const TextTheme(
