@@ -25,6 +25,8 @@ class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
     _items[5].deadline = DateTime.now();
   }
 
+  @override
+  int get itemsDone => _items.where((element) => element.done).length;
 
   @override
   Future addItem(TodoModel item) async {
@@ -66,4 +68,5 @@ class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
     _items.add(item);
     notifyListeners();
   }
+
 }

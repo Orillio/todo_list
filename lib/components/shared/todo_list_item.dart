@@ -23,8 +23,20 @@ class _TodoListItemState extends State<TodoListItem> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: const [
-            SizedBox(width: 8, child: Icon(Icons.priority_high_rounded)),
-            SizedBox(width: 8, child: Icon(Icons.priority_high_rounded)),
+            SizedBox(
+              width: 8,
+              child: Icon(
+                Icons.priority_high_rounded,
+                color: ConstColors.colorRed,
+              ),
+            ),
+            SizedBox(
+              width: 8,
+              child: Icon(
+                Icons.priority_high_rounded,
+                color: ConstColors.colorRed,
+              ),
+            ),
           ],
         ),
       );
@@ -37,23 +49,22 @@ class _TodoListItemState extends State<TodoListItem> {
   }
 
   ThemeData _checkboxTheme() {
-
-
     return darkTheme.copyWith(
       checkboxTheme: CheckboxThemeData(
         checkColor: MaterialStateProperty.all(ConstColors.backSecondary),
-        fillColor: MaterialStateProperty.resolveWith((states) {
-          if(states.contains(MaterialState.selected)) {
-            return ConstColors.colorGreen;
-          }
-          else {
-            if(widget.model.importance == "high") {
-              return ConstColors.colorRed;
+        fillColor: MaterialStateProperty.resolveWith(
+          (states) {
+            if (states.contains(MaterialState.selected)) {
+              return ConstColors.colorGreen;
             } else {
-              return ConstColors.supportSeparator;
+              if (widget.model.importance == "high") {
+                return ConstColors.colorRed;
+              } else {
+                return ConstColors.supportSeparator;
+              }
             }
-          }
-        }),
+          },
+        ),
       ),
     );
   }
@@ -62,56 +73,78 @@ class _TodoListItemState extends State<TodoListItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 10, top: 16, bottom: 16, right: 16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 1,
-            child: SizedBox(
-              width: 20,
-              height: 20,
-              child: Theme(
-                data: _checkboxTheme(),
-                child: Checkbox(
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  value: widget.model.done,
-                  onChanged: (value) {},
+    return Dismissible(
+      background: Container(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.only(left: 30),
+        color: ConstColors.colorGreen,
+        child: const Icon(
+          Icons.check,
+          color: Colors.white,
+        ),
+      ),
+      secondaryBackground: Container(
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 30),
+        color: ConstColors.colorRed,
+        child: const Icon(
+          Icons.delete,
+          color: Colors.white,
+        ),
+      ),
+      key: UniqueKey(),
+      child: Padding(
+        padding:
+            const EdgeInsets.only(left: 10, top: 16, bottom: 16, right: 16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 1,
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: Theme(
+                  data: _checkboxTheme(),
+                  child: Checkbox(
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    value: widget.model.done,
+                    onChanged: (value) {},
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 6,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                if(widget.model.importance != "basic")
+            Expanded(
+              flex: 6,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  if (widget.model.importance != "basic")
+                    Expanded(
+                      child: _importanceIcon(),
+                    ),
                   Expanded(
-                    child: _importanceIcon(),
+                    flex: 8,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          child: MediumTitle(widget.model.text),
+                        ),
+                        if (widget.model.deadline != null)
+                          SmallLabel(dateToString(widget.model.deadline!)),
+                      ],
+                    ),
                   ),
-                Expanded(
-                  flex: 8,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        child: MediumTitle(widget.model.text),
-                      ),
-                      if (widget.model.deadline != null)
-                        SmallLabel(dateToString(widget.model.deadline!)),
-                    ],
-                  ),
-                ),
-                //todo: show date if exists, importance, show checked, make dismiss
-                const Icon(Icons.info_outline)
-              ],
+                  //todo: show date if exists, importance, show checked, make dismiss
+                  const Icon(Icons.info_outline)
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

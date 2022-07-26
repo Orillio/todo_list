@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_list/business/i_todo_provider.dart';
 import 'package:todo_list/components/shared/medium_label.dart';
 
 class TodoListHeader extends SliverPersistentHeaderDelegate {
@@ -16,6 +18,8 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+
+    var model = context.watch<ITodoProvider>();
 
     double negativeRelationValue = (1 - (shrinkOffset / (maxExtent - minExtent))).clamp(0, 1);
     double positiveRelationValue = (shrinkOffset / (maxExtent - minExtent)).clamp(0, 1);
@@ -61,8 +65,8 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
                     children: [
                       Opacity(
                         opacity: labelOpacity,
-                        child: const MediumLabel(
-                          "Выполнено - 5",
+                        child: MediumLabel(
+                          "Выполнено - ${model.itemsDone}",
                         ),
                       ),
                       Transform.translate(

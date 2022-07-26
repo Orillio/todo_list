@@ -10,4 +10,6 @@ abstract class ITodoProvider with ChangeNotifier {
   Future addItem(TodoModel item);
   Future updateItem(TodoModel item);
   Future deleteItem(TodoModel item);
+
+  int get itemsDone;
 }
