@@ -17,9 +17,12 @@ class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
           done: i % 2 == 0,
           createdAt: now,
           changedAt: now,
-          importance: "low",
+          importance: i % 3 == 0 ? "low" : i % 3 == 1 ? "basic" : "high",
         ),
     ];
+    _items[0].deadline = DateTime.now();
+    _items[3].deadline = DateTime.now();
+    _items[5].deadline = DateTime.now();
   }
 
 

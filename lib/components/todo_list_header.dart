@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:todo_list/components/shared/small_label.dart';
+import 'package:todo_list/components/shared/medium_label.dart';
 
 class TodoListHeader extends SliverPersistentHeaderDelegate {
   final double maximumExtent;
@@ -61,7 +61,7 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
                     children: [
                       Opacity(
                         opacity: labelOpacity,
-                        child: const SmallLabel(
+                        child: const MediumLabel(
                           "Выполнено - 5",
                         ),
                       ),

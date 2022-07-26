@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/components/shared/medium_label.dart';
+import 'package:intl/intl.dart';
+import 'package:todo_list/components/shared/medium_title.dart';
+import 'package:todo_list/components/shared/small_label.dart';
 import 'package:todo_list/models/todo_model.dart';
+import 'package:todo_list/themes/dark_theme.dart';
 
 class TodoListItem extends StatefulWidget {
   final TodoModel model;
@@ -12,6 +15,51 @@ class TodoListItem extends StatefulWidget {
 }
 
 class _TodoListItemState extends State<TodoListItem> {
+  Widget _importanceIcon() {
+    if (widget.model.importance == "basic") return const SizedBox.shrink();
+    if (widget.model.importance == "high") {
+      return SizedBox(
+        width: 16,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: const [
+            SizedBox(width: 8, child: Icon(Icons.priority_high_rounded)),
+            SizedBox(width: 8, child: Icon(Icons.priority_high_rounded)),
+          ],
+        ),
+      );
+    } else {
+      return const SizedBox(
+        width: 20,
+        child: Icon(Icons.arrow_downward_rounded),
+      );
+    }
+  }
+
+  ThemeData _checkboxTheme() {
+
+
+    return darkTheme.copyWith(
+      checkboxTheme: CheckboxThemeData(
+        checkColor: MaterialStateProperty.all(ConstColors.backSecondary),
+        fillColor: MaterialStateProperty.resolveWith((states) {
+          if(states.contains(MaterialState.selected)) {
+            return ConstColors.colorGreen;
+          }
+          else {
+            if(widget.model.importance == "high") {
+              return ConstColors.colorRed;
+            } else {
+              return ConstColors.supportSeparator;
+            }
+          }
+        }),
+      ),
+    );
+  }
+
+  String dateToString(DateTime date) => DateFormat('dd.MM.yyyy').format(date);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,10 +72,13 @@ class _TodoListItemState extends State<TodoListItem> {
             child: SizedBox(
               width: 20,
               height: 20,
-              child: Checkbox(
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                value: false,
-                onChanged: (value) {},
+              child: Theme(
+                data: _checkboxTheme(),
+                child: Checkbox(
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  value: widget.model.done,
+                  onChanged: (value) {},
+                ),
               ),
             ),
           ),
@@ -37,9 +88,23 @@ class _TodoListItemState extends State<TodoListItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  child: MediumLabel(widget.model.text),
+                if(widget.model.importance != "basic")
+                  Expanded(
+                    child: _importanceIcon(),
+                  ),
+                Expanded(
+                  flex: 8,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        child: MediumTitle(widget.model.text),
+                      ),
+                      if (widget.model.deadline != null)
+                        SmallLabel(dateToString(widget.model.deadline!)),
+                    ],
+                  ),
                 ),
                 //todo: show date if exists, importance, show checked, make dismiss
                 const Icon(Icons.info_outline)

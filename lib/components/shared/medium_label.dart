@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class SmallLabel extends StatelessWidget {
+class MediumLabel extends StatelessWidget {
   final String text;
-  const SmallLabel(this.text, {Key? key}) : super(key: key);
+  const MediumLabel(this.text, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: Theme.of(context).textTheme.labelSmall,
+      style: Theme.of(context).textTheme.labelMedium,
     );
   }
 }
