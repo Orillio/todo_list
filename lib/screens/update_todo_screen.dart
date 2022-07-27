@@ -17,13 +17,11 @@ class TodoFormProvider extends ChangeNotifier {
 
   TodoFormProvider();
 
-  TodoFormProvider.fromOldModel(
-    TodoModel model
-  ){
+  TodoFormProvider.fromOldModel(TodoModel model) {
     controller.text = model.text;
     _importance = model.importance;
     _deadline = model.deadline;
-    if(model.deadline != null) {
+    if (model.deadline != null) {
       _deadlineString = DateFormat.yMMMMd("ru").format(model.deadline!);
     }
   }
@@ -68,7 +66,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) {
-        if(widget.model == null) {
+        if (widget.model == null) {
           return TodoFormProvider();
         } else {
           return TodoFormProvider.fromOldModel(widget.model!);
@@ -76,7 +74,6 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
       },
       child: Consumer3<TodoFormProvider, NavigationController, ITodoProvider>(
         builder: (context, provider, navController, todoProvider, child) {
-
           return GestureDetector(
             onTap: FocusScope.of(context).unfocus,
             child: Scaffold(
@@ -84,8 +81,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                 elevation: 0,
                 backgroundColor: Colors.transparent,
                 leading: GestureDetector(
-                  onTap: () =>
-                      navController.navigateBack(),
+                  onTap: () => navController.navigateBack(),
                   child: const Icon(
                     Icons.close,
                     color: Colors.white,
@@ -98,25 +94,20 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                       onPress: () {
                         if (provider.controller.text.isEmpty) return;
                         if (widget.model == null) {
-                          todoProvider.addItem(
-                            TodoModel(
-                              id: const Uuid().v4(),
-                              text: provider.controller.text,
-                              done: false,
-                              importance: provider.importance,
-                              deadline: provider.deadline,
-                              createdAt: DateTime.now(),
-                              changedAt: DateTime.now(),
-                            )
-                          );
-                        }
-                        else {
-                          todoProvider.updateItem(
-                            widget.model!
-                              ..text = provider.controller.text
-                              ..deadline = provider.deadline
-                              ..importance = provider.importance
-                          );
+                          todoProvider.addItem(TodoModel(
+                            id: const Uuid().v4(),
+                            text: provider.controller.text,
+                            done: false,
+                            importance: provider.importance,
+                            deadline: provider.deadline,
+                            createdAt: DateTime.now(),
+                            changedAt: DateTime.now(),
+                          ));
+                        } else {
+                          todoProvider.updateItem(widget.model!
+                            ..text = provider.controller.text
+                            ..deadline = provider.deadline
+                            ..importance = provider.importance);
                         }
                         navController.navigateBack();
                       },

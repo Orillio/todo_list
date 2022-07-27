@@ -50,6 +50,7 @@ class _TodoListItemState extends State<TodoListItem> {
       );
     }
   }
+
   ThemeData _checkboxTheme() {
     return darkTheme.copyWith(
       checkboxTheme: CheckboxThemeData(
@@ -70,8 +71,8 @@ class _TodoListItemState extends State<TodoListItem> {
       ),
     );
   }
-  String dateToString(DateTime date) => DateFormat('dd.MM.yyyy').format(date);
 
+  String dateToString(DateTime date) => DateFormat('dd.MM.yyyy').format(date);
 
   @override
   Widget build(BuildContext context) {
@@ -96,18 +97,13 @@ class _TodoListItemState extends State<TodoListItem> {
         ),
       ),
       confirmDismiss: (direction) async {
-        if(direction == DismissDirection.startToEnd) {
-          model.updateItem(
-            widget.model.changeFields(
-              done: true,
-            )
-          );
+        if (direction == DismissDirection.startToEnd) {
+          model.updateItem(widget.model.changeFields(
+            done: true,
+          ));
           return false;
-        }
-        else {
-          model.deleteItem(
-            widget.model
-          );
+        } else {
+          model.deleteItem(widget.model);
           return true;
         }
       },
@@ -129,11 +125,9 @@ class _TodoListItemState extends State<TodoListItem> {
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     value: widget.model.done,
                     onChanged: (value) {
-                      model.updateItem(
-                        widget.model.changeFields(
-                          done: value,
-                        )
-                      );
+                      model.updateItem(widget.model.changeFields(
+                        done: value,
+                      ));
                     },
                   ),
                 ),
@@ -167,7 +161,8 @@ class _TodoListItemState extends State<TodoListItem> {
                     builder: (context, navController, _) {
                       return GestureDetector(
                         onTap: () {
-                          navController.navigateToUpdateTodoModelScreen(widget.model);
+                          navController
+                              .navigateToUpdateTodoModelScreen(widget.model);
                         },
                         child: const Icon(Icons.info_outline),
                       );

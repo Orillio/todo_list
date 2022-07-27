@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/business/fake_todo_provider.dart';
@@ -12,7 +11,6 @@ void main() {
   runApp(const MyApp());
 }
 
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -21,7 +19,8 @@ class MyApp extends StatelessWidget {
     //Wrapping MaterialApp in MultiProvider to access models in all routes.
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<ITodoProvider>(create: (_) => FakeTodoProvider()),
+        ChangeNotifierProvider<ITodoProvider>(
+            create: (_) => FakeTodoProvider()),
         ListenableProvider(create: (_) => NavigationController()),
       ],
       child: Builder(

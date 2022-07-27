@@ -4,7 +4,6 @@ import 'package:uuid/uuid.dart';
 import 'i_todo_provider.dart';
 
 class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
-
   late final List<TodoModel> _items;
 
   FakeTodoProvider() {
@@ -17,7 +16,11 @@ class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
           done: i % 2 == 0,
           createdAt: now,
           changedAt: now,
-          importance: i % 3 == 0 ? "low" : i % 3 == 1 ? "basic" : "high",
+          importance: i % 3 == 0
+              ? "low"
+              : i % 3 == 1
+                  ? "basic"
+                  : "high",
         ),
     ];
     _items[0].deadline = DateTime.now();
@@ -48,7 +51,7 @@ class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
 
   @override
   Future<List<TodoModel>> getItemsFromNetwork() async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     return _items;
   }
 
@@ -69,7 +72,7 @@ class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
     await Future.delayed(const Duration(milliseconds: 150));
     var model = _items.where((i) => i.id == item.id).first;
     model = item;
+    item = model;
     notifyListeners();
   }
-
 }

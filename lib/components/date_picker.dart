@@ -25,34 +25,29 @@ class _DatePickerState extends State<DatePicker> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const MediumTitle("Сделать до"),
-            if(model.deadlineString != null)
+            if (model.deadlineString != null)
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
-                model.deadlineString!,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .labelSmall
-                    ?.copyWith(
-                  color: ConstColors.colorBlue,
+                  model.deadlineString!,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: ConstColors.colorBlue,
+                      ),
                 ),
-              ),
-            )
+              )
           ],
         ),
         Switch(
           value: model.deadline != null,
           onChanged: (newVal) async {
-            if(newVal){
+            if (newVal) {
               var date = await showDatePicker(
-                initialEntryMode: DatePickerEntryMode.calendarOnly,
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime.now(),
-                lastDate: DateTime(2100)
-              );
-              if(date != null) {
+                  initialEntryMode: DatePickerEntryMode.calendarOnly,
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime.now(),
+                  lastDate: DateTime(2100));
+              if (date != null) {
                 model.deadline = date;
                 model.deadlineString = DateFormat.yMMMd("ru").format(date);
                 return;

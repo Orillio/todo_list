@@ -3,9 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../screens/update_todo_screen.dart';
 
-
 class ImportanceDropdown extends StatefulWidget {
-
   const ImportanceDropdown({Key? key}) : super(key: key);
 
   @override
@@ -16,7 +14,7 @@ class _ImportanceDropdownState extends State<ImportanceDropdown> {
   String importanceString = "Нет";
 
   String _importanceParsed(String imp) {
-    switch(imp) {
+    switch (imp) {
       case "Нет":
         return "low";
       case "Низкий":

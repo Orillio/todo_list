@@ -1,4 +1,3 @@
-
 class TodoModel {
   String id;
   String text;
@@ -62,10 +61,4 @@ class TodoModel {
       createdAt: createdAt ?? this.createdAt,
     );
   }
-
-
-
-
-
-
 }

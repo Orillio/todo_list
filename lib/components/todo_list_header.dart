@@ -16,14 +16,15 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
     required this.maximumExtent,
   });
 
-
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     var model = context.watch<ITodoProvider>();
 
-    double negativeRelationValue = (1 - (shrinkOffset / (maxExtent - minExtent))).clamp(0, 1);
-    double positiveRelationValue = (shrinkOffset / (maxExtent - minExtent)).clamp(0, 1);
+    double negativeRelationValue =
+        (1 - (shrinkOffset / (maxExtent - minExtent))).clamp(0, 1);
+    double positiveRelationValue =
+        (shrinkOffset / (maxExtent - minExtent)).clamp(0, 1);
 
     double titleXOffset = lerpDouble(0, -50, positiveRelationValue)!;
     double titleYOffset = lerpDouble(0, 35, positiveRelationValue)!;
@@ -60,27 +61,29 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
                     child: Text(
                       "Мои дела",
                       style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: titleFontSize
-                      ),
+                          fontWeight: FontWeight.w500, fontSize: titleFontSize),
                     ),
                   ),
-                  const SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Transform.translate(
-                        offset: Offset(labelXOffset, labelYOffset),
-                        child: Opacity(
-                          opacity: labelOpacity,
-                          child: MediumLabel(
-                            "Выполнено - ${model.itemsDone}",
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Transform.translate(
+                          offset: Offset(labelXOffset, labelYOffset),
+                          child: Opacity(
+                            opacity: labelOpacity,
+                            child: MediumLabel(
+                              "Выполнено - ${model.itemsDone}",
+                            ),
                           ),
                         ),
-                      ),
-                      const Icon(Icons.visibility, color: ConstColors.colorBlue,),
-                    ]
-                  ),
+                        const Icon(
+                          Icons.visibility,
+                          color: ConstColors.colorBlue,
+                        ),
+                      ]),
                 ],
               ),
             ),
@@ -100,10 +103,7 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
       true;
 
-
-
   @override
   OverScrollHeaderStretchConfiguration get stretchConfiguration =>
       OverScrollHeaderStretchConfiguration();
-
 }

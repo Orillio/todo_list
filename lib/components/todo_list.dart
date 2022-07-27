@@ -41,7 +41,7 @@ class _TodoListState extends State<TodoList> {
                       },
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 10,bottom: 22),
+                      padding: const EdgeInsets.only(top: 10, bottom: 22),
                       child: Row(
                         children: [
                           const Expanded(
@@ -55,10 +55,10 @@ class _TodoListState extends State<TodoList> {
                                 navController.navigateToNewTodoScreen();
                               },
                               child: Text("Новое",
-                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                  fontSize: 16
-                                )
-                              ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelSmall
+                                      ?.copyWith(fontSize: 16)),
                             ),
                           ),
                         ],

@@ -13,24 +13,20 @@ ThemeData darkTheme = ThemeData(
   ),
   switchTheme: SwitchThemeData(
     thumbColor: MaterialStateProperty.resolveWith((states) {
-      if(states.contains(MaterialState.selected)) {
+      if (states.contains(MaterialState.selected)) {
         return ConstColors.colorBlue;
-      }
-      else {
+      } else {
         return ConstColors.backElevated;
       }
     }),
     trackColor: MaterialStateProperty.resolveWith((states) {
-      if(states.contains(MaterialState.selected)) {
+      if (states.contains(MaterialState.selected)) {
         return ConstColors.colorBlue.withOpacity(0.3);
-      }
-      else {
+      } else {
         return ConstColors.supportOverlay;
       }
     }),
   ),
-
-
   textTheme: const TextTheme(
     titleLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.w500),
     labelSmall: TextStyle(
@@ -38,8 +34,10 @@ ThemeData darkTheme = ThemeData(
       letterSpacing: 0,
       color: ConstColors.labelTertiary,
     ),
-    labelMedium: TextStyle(fontSize: 16, letterSpacing: 0, color: ConstColors.labelTertiary),
-    titleMedium: TextStyle(fontSize: 16, letterSpacing: 0, color: ConstColors.labelPrimary),
+    labelMedium: TextStyle(
+        fontSize: 16, letterSpacing: 0, color: ConstColors.labelTertiary),
+    titleMedium: TextStyle(
+        fontSize: 16, letterSpacing: 0, color: ConstColors.labelPrimary),
   ),
 );
 
@@ -62,6 +60,4 @@ class ConstColors {
   static const backPrimary = Color(0xFF161618);
   static const backSecondary = Color(0xFF252528);
   static const backElevated = Color(0xFF3C3C3F);
-
-
 }

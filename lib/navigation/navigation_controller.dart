@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/models/todo_model.dart';
-import 'package:todo_list/screens/todo_screen.dart';
 import 'package:todo_list/screens/update_todo_screen.dart';
-import 'package:todo_list/themes/dark_theme.dart';
 
 class NavigationController extends ChangeNotifier {
   final GlobalKey<NavigatorState> _key = GlobalKey();
@@ -27,19 +25,14 @@ class NavigationController extends ChangeNotifier {
   }
 
   void navigateToNewTodoScreen() {
-    _key.currentState?.push(
-      PageRouteBuilder(
+    _key.currentState?.push(PageRouteBuilder(
         pageBuilder: (_, __, ___) => const UpdateTodoScreen(),
-        transitionsBuilder: slideTransitionBuilder
-      )
-    );
+        transitionsBuilder: slideTransitionBuilder));
   }
+
   void navigateToUpdateTodoModelScreen(TodoModel model) {
-    _key.currentState?.push(
-        PageRouteBuilder(
-            pageBuilder: (_, __, ___) => UpdateTodoScreen(model: model),
-            transitionsBuilder: slideTransitionBuilder
-        )
-    );
+    _key.currentState?.push(PageRouteBuilder(
+        pageBuilder: (_, __, ___) => UpdateTodoScreen(model: model),
+        transitionsBuilder: slideTransitionBuilder));
   }
 }
