@@ -13,6 +13,19 @@ class ImportanceDropdown extends StatefulWidget {
 }
 
 class _ImportanceDropdownState extends State<ImportanceDropdown> {
+  String importanceString = "Нет";
+
+  String _importanceParsed(String imp) {
+    switch(imp) {
+      case "Нет":
+        return "low";
+      case "Низкий":
+        return "basic";
+      case "Высокий":
+        return "high";
+    }
+    return "low";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +47,17 @@ class _ImportanceDropdownState extends State<ImportanceDropdown> {
             underline: Transform.translate(
               offset: const Offset(0, 20),
               child: Text(
-                model.importance,
+                importanceString,
                 style: Theme.of(context).textTheme.labelSmall,
               ),
             ),
             onChanged: (String? newValue) {
-              model.importance = newValue!;
+              importanceString = newValue!;
+              model.importance = _importanceParsed(newValue);
               setState(() {});
             },
-            items: <String>['Нет', 'Низкий', 'Высокий']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
+            items: ['Нет', 'Низкий', 'Высокий'].map((value) {
+              return DropdownMenuItem(
                 value: value,
                 child: Text(value),
               );

@@ -5,6 +5,7 @@ import 'package:todo_list/business/i_todo_provider.dart';
 import 'package:todo_list/components/shared/medium_title.dart';
 import 'package:todo_list/components/shared/small_label.dart';
 import 'package:todo_list/models/todo_model.dart';
+import 'package:todo_list/navigation/navigation_controller.dart';
 import 'package:todo_list/themes/dark_theme.dart';
 
 class TodoListItem extends StatefulWidget {
@@ -162,8 +163,16 @@ class _TodoListItemState extends State<TodoListItem> {
                       ],
                     ),
                   ),
-                  //todo: show date if exists, importance, show checked, make dismiss
-                  const Icon(Icons.info_outline)
+                  Consumer<NavigationController>(
+                    builder: (context, navController, _) {
+                      return GestureDetector(
+                        onTap: () {
+                          navController.navigateToUpdateTodoModelScreen(widget.model);
+                        },
+                        child: const Icon(Icons.info_outline),
+                      );
+                    },
+                  )
                 ],
               ),
             ),
