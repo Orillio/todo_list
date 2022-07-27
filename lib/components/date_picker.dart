@@ -46,7 +46,7 @@ class _DatePickerState extends State<DatePicker> {
           onChanged: (newVal) async {
             if(newVal){
               var date = await showDatePicker(
-                locale: Locale("ru"),
+                locale: const Locale("ru"),
                 initialEntryMode: DatePickerEntryMode.calendarOnly,
                 context: context,
                 initialDate: DateTime.now(),
@@ -60,6 +60,7 @@ class _DatePickerState extends State<DatePicker> {
               }
             }
             model.deadline = null;
+            model.deadlineString = null;
           },
         )
       ],
