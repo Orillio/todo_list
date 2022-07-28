@@ -1,3 +1,6 @@
+
+import 'package:uuid/uuid.dart';
+
 class TodoModel {
   String id;
   String text;
@@ -7,6 +10,7 @@ class TodoModel {
   DateTime? deadline;
   DateTime changedAt;
   DateTime createdAt;
+  String lastUpdatedBy;
 
   TodoModel({
     required this.importance,
@@ -15,6 +19,7 @@ class TodoModel {
     required this.done,
     required this.changedAt,
     required this.createdAt,
+    required this.lastUpdatedBy,
     this.deadline,
     this.color,
   });
@@ -39,7 +44,6 @@ class TodoModel {
     return this;
   }
 
-  // copywith
   TodoModel copyWith({
     String? id,
     String? text,
@@ -59,6 +63,22 @@ class TodoModel {
       deadline: deadline ?? this.deadline,
       changedAt: changedAt ?? this.changedAt,
       createdAt: createdAt ?? this.createdAt,
+      lastUpdatedBy: const Uuid().v4(),
     );
+  }
+
+  Map<String, dynamic> toJSON() {
+    var data = <String, dynamic>{
+      "id": id,
+      "text": text,
+      "importance": importance,
+      "done": done,
+      "created_at": (createdAt.millisecondsSinceEpoch / 1000).round(),
+      "changed_at": (changedAt.millisecondsSinceEpoch / 1000).round(),
+      "last_updated_by": lastUpdatedBy,
+    };
+    if(deadline != null) data["deadline"] = deadline;
+    if(color != null) data["color"] = color;
+    return data;
   }
 }

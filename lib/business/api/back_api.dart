@@ -1,22 +1,32 @@
+
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
+import 'package:todo_list/models/todo_model.dart';
 
 class BackApi {
 
   static const _baseUrl = "https://beta.mrdekk.ru/todobackend";
-  static const _token = "https://beta.mrdekk.ru/todobackend";
   static final BackApi _instance = BackApi._internal();
   static int? _revision;
+
+  Map<String, dynamic> fromItemTemplate(Map<String, dynamic> data) {
+    return {
+      "status": "ok",
+      "element": data,
+    };
+  }
+
+  Map<String, dynamic> fromListTemplate(List<Map<String, dynamic>> data) {
+    return {
+      "status": "ok",
+      "list": data,
+    };
+  }
 
   static final _logger = Logger();
   static final Dio _dio = Dio(
     BaseOptions(
       baseUrl: _baseUrl,
-      contentType: "application/json",
-      headers: {
-        "X-Last-Known-Revision": _revision,
-        "Authorization": "Bearer Odonwell"
-      }
     )
   );
   BackApi._internal();
@@ -30,7 +40,12 @@ class BackApi {
     try {
       response = await _dio.request(
         relativeUrl,
+        data: data,
         options: Options(
+          headers: {
+            "X-Last-Known-Revision": _revision,
+            "Authorization": "Bearer Odonwell",
+          },
           method: method.toUpperCase(),
         )
       );
@@ -45,12 +60,12 @@ class BackApi {
           );
         }
         else {
-          _logger.w(
+          _logger.i(
               "Getting up to date revision..."
           );
         }
         _revision = await getUpToDateRevision();
-        request(relativeUrl, method: method, retry: false);
+        return await request(relativeUrl, method: method, data: data, retry: false);
       }
       _logger.wtf(
           "Some error happened. Printing Stack Trace..."
@@ -65,9 +80,46 @@ class BackApi {
     return response.data["revision"];
   }
 
-  Future<Response> getTodoList() async {
+  Future<Response> getList() async {
     var response = await request("/list/", method: "GET");
     return response.data["revision"];
   }
-
+  Future addItem(TodoModel model) async {
+    var response = await request(
+      "/list/",
+      method: "POST",
+      data: fromItemTemplate(model.toJSON())
+    );
+    Logger().i("Following item has been added:\n${response.data}");
+  }
+  Future updateList(List<TodoModel> model) async {
+    var response = await request(
+      "/list/",
+      method: "PATCH",
+      data: fromListTemplate(model.map((e) => e.toJSON()).toList())
+    );
+    Logger().i("Following item has been added:\n${response.data}");
+  }
+  Future deleteItem(String id) async {
+    await request(
+      "/list/$id",
+      method: "DELETE",
+    );
+    Logger().i("Item with id: $id has been deleted.");
+  }
+  Future<Response> getItem(String id) async {
+    var response = await request(
+      "/list/${id}",
+      method: "GET",
+    );
+    return response;
+  }
+  Future updateItem(TodoModel model) async {
+    var response = await request(
+      "/list/${model.id}",
+      method: "PUT",
+      data: fromItemTemplate(model.toJSON())
+    );
+    Logger().i("Following item has been updated:\n${response.data}");
+  }
 }

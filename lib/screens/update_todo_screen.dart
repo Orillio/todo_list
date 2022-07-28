@@ -96,6 +96,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                         if (widget.model == null) {
                           todoProvider.addItem(TodoModel(
                             id: const Uuid().v4(),
+                            lastUpdatedBy: const Uuid().v4(),
                             text: provider.controller.text,
                             done: false,
                             importance: provider.importance,
@@ -107,7 +108,9 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                           todoProvider.updateItem(widget.model!
                             ..text = provider.controller.text
                             ..deadline = provider.deadline
-                            ..importance = provider.importance);
+                            ..importance = provider.importance
+                            ..changedAt = DateTime.now()
+                          );
                         }
                         navController.navigateBack();
                       },
