@@ -2,15 +2,15 @@
 import 'package:uuid/uuid.dart';
 
 class TodoModel {
-  String id;
-  String text;
+  late String id;
+  late String text;
   String? color;
-  bool done;
-  String importance;
+  late bool done;
+  late String importance;
   DateTime? deadline;
-  DateTime changedAt;
-  DateTime createdAt;
-  String lastUpdatedBy;
+  late DateTime changedAt;
+  late DateTime createdAt;
+  late String lastUpdatedBy;
 
   TodoModel({
     required this.importance,
@@ -44,30 +44,7 @@ class TodoModel {
     return this;
   }
 
-  TodoModel copyWith({
-    String? id,
-    String? text,
-    String? color,
-    bool? done,
-    String? importance,
-    DateTime? deadline,
-    DateTime? changedAt,
-    DateTime? createdAt,
-  }) {
-    return TodoModel(
-      id: id ?? this.id,
-      text: text ?? this.text,
-      color: color ?? this.color,
-      done: done ?? this.done,
-      importance: importance ?? this.importance,
-      deadline: deadline ?? this.deadline,
-      changedAt: changedAt ?? this.changedAt,
-      createdAt: createdAt ?? this.createdAt,
-      lastUpdatedBy: const Uuid().v4(),
-    );
-  }
-
-  Map<String, dynamic> toJSON() {
+  Map<String, dynamic> toMap() {
     var data = <String, dynamic>{
       "id": id,
       "text": text,
@@ -77,8 +54,22 @@ class TodoModel {
       "changed_at": (changedAt.millisecondsSinceEpoch / 1000).round(),
       "last_updated_by": lastUpdatedBy,
     };
-    if(deadline != null) data["deadline"] = deadline;
+    if(deadline != null) data["deadline"] = (deadline!.millisecondsSinceEpoch / 1000).round();
     if(color != null) data["color"] = color;
     return data;
+  }
+  TodoModel.fromMap(dynamic map) {
+    id = map["id"];
+    text = map["text"];
+    done = map["done"];
+    importance = map["importance"];
+    createdAt = DateTime.fromMillisecondsSinceEpoch(map["created_at"] * 1000);
+    changedAt = DateTime.fromMillisecondsSinceEpoch(map["changed_at"] * 1000);
+    lastUpdatedBy = map["last_updated_by"];
+
+    if(map["deadline"] != null) deadline = DateTime.fromMillisecondsSinceEpoch(map["deadline"] * 1000);
+    color = map["color"];
+
+
   }
 }

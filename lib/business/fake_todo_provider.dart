@@ -21,6 +21,7 @@ class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
               : i % 3 == 1
                   ? "basic"
                   : "high",
+          lastUpdatedBy: const Uuid().v4(),
         ),
     ];
     _items[0].deadline = DateTime.now();
@@ -75,4 +76,8 @@ class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
     item = model;
     notifyListeners();
   }
+
+  @override
+  Future<List<TodoModel>> get modelsListFuture async => _items;
+
 }

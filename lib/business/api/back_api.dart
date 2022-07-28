@@ -80,24 +80,26 @@ class BackApi {
     return response.data["revision"];
   }
 
-  Future<Response> getList() async {
+  Future<dynamic> getList() async {
     var response = await request("/list/", method: "GET");
-    return response.data["revision"];
+    return response.data["list"];
   }
   Future addItem(TodoModel model) async {
     var response = await request(
       "/list/",
       method: "POST",
-      data: fromItemTemplate(model.toJSON())
+      data: fromItemTemplate(model.toMap())
     );
+    _revision = _revision! + 1;
     Logger().i("Following item has been added:\n${response.data}");
   }
   Future updateList(List<TodoModel> model) async {
     var response = await request(
       "/list/",
       method: "PATCH",
-      data: fromListTemplate(model.map((e) => e.toJSON()).toList())
+      data: fromListTemplate(model.map((e) => e.toMap()).toList())
     );
+    _revision = _revision! + 1;
     Logger().i("Following item has been added:\n${response.data}");
   }
   Future deleteItem(String id) async {
@@ -105,6 +107,7 @@ class BackApi {
       "/list/$id",
       method: "DELETE",
     );
+    _revision = _revision! + 1;
     Logger().i("Item with id: $id has been deleted.");
   }
   Future<Response> getItem(String id) async {
@@ -118,8 +121,9 @@ class BackApi {
     var response = await request(
       "/list/${model.id}",
       method: "PUT",
-      data: fromItemTemplate(model.toJSON())
+      data: fromItemTemplate(model.toMap())
     );
+    _revision = _revision! + 1;
     Logger().i("Following item has been updated:\n${response.data}");
   }
 }

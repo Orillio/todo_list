@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/business/fake_todo_provider.dart';
 import 'package:todo_list/business/i_todo_provider.dart';
+import 'package:todo_list/business/server_todo_provider.dart';
 import 'package:todo_list/navigation/navigation_controller.dart';
 import 'package:todo_list/screens/todo_screen.dart';
 import 'package:todo_list/themes/dark_theme.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<ITodoProvider>(
-            create: (_) => FakeTodoProvider()),
+            create: (_) => ServerTodoProvider()),
         ListenableProvider(create: (_) => NavigationController()),
       ],
       child: Builder(

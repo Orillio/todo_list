@@ -20,7 +20,7 @@ class TodoListItem extends StatefulWidget {
 class _TodoListItemState extends State<TodoListItem> {
   Widget _importanceIcon() {
     if (widget.model.importance == "basic") return const SizedBox.shrink();
-    if (widget.model.importance == "high") {
+    if (widget.model.importance == "important") {
       return SizedBox(
         width: 16,
         child: Row(
@@ -60,7 +60,7 @@ class _TodoListItemState extends State<TodoListItem> {
             if (states.contains(MaterialState.selected)) {
               return ConstColors.colorGreen;
             } else {
-              if (widget.model.importance == "high") {
+              if (widget.model.importance == "important") {
                 return ConstColors.colorRed;
               } else {
                 return ConstColors.supportSeparator;

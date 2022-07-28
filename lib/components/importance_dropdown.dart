@@ -20,14 +20,27 @@ class _ImportanceDropdownState extends State<ImportanceDropdown> {
       case "Низкий":
         return "basic";
       case "Высокий":
-        return "high";
+        return "important";
     }
     return "low";
+  }
+
+  String _reverseImportanceParsed(String imp) {
+    switch (imp) {
+      case "low":
+        return "Нет";
+      case "basic":
+        return "Низкий";
+      case "important":
+        return "Высокий";
+    }
+    return "Нет";
   }
 
   @override
   Widget build(BuildContext context) {
     var model = context.read<TodoFormProvider>();
+    importanceString = _reverseImportanceParsed(model.importance);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

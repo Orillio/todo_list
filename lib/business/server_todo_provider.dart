@@ -6,29 +6,42 @@ import 'i_todo_provider.dart';
 class ServerTodoProvider with ChangeNotifier implements ITodoProvider {
 
   static var api = BackApi();
+  List<TodoModel>? _offlineItems;
 
   @override
-  Future addItem(TodoModel item) {
-    // TODO: implement addItem
-    throw UnimplementedError();
+  int get itemsDone => _offlineItems?.where((e) => e.done).length ?? 0;
+
+  @override
+  Future<List<TodoModel>> get modelsListFuture async {
+    return _offlineItems ??= await getItemsFromNetwork();
   }
 
   @override
-  Future deleteItem(TodoModel item) {
-    // TODO: implement deleteItem
-    throw UnimplementedError();
+  Future addItem(TodoModel item) async {
+    await api.addItem(item);
+    _offlineItems?.add(item);
+    notifyListeners();
   }
 
   @override
-  Future<TodoModel> getConcreteItem(String uid) {
-    // TODO: implement getConcreteItem
-    throw UnimplementedError();
+  Future deleteItem(TodoModel item) async {
+    await Future.delayed(const Duration(milliseconds: 150));
+    await api.deleteItem(item.id);
+    _offlineItems?.removeWhere((e) => e.id == item.id);
+    notifyListeners();
   }
 
   @override
-  Future<List<TodoModel>> getItemsFromNetwork() {
-    // TODO: implement getItemsFromNetwork
-    throw UnimplementedError();
+  Future<TodoModel> getConcreteItem(String uid) async {
+    return TodoModel.fromMap(api.getItem(uid));
+  }
+
+  @override
+  Future<List<TodoModel>> getItemsFromNetwork() async {
+    var responseList = (await api.getList());
+    return (responseList as List<dynamic>).map((e) {
+      return TodoModel.fromMap(e);
+    }).toList();
   }
 
   @override
@@ -37,20 +50,21 @@ class ServerTodoProvider with ChangeNotifier implements ITodoProvider {
     throw UnimplementedError();
   }
 
-  @override
-  // TODO: implement itemsDone
-  int get itemsDone => throw UnimplementedError();
 
   @override
-  Future refreshList(List<TodoModel> list) {
-    // TODO: implement refreshList
-    throw UnimplementedError();
+  Future refreshList(List<TodoModel> list) async {
+    await api.updateList(list);
+    notifyListeners();
   }
 
   @override
-  Future updateItem(TodoModel item) {
-    // TODO: implement updateItem
-    throw UnimplementedError();
+  Future updateItem(TodoModel item) async {
+    await Future.delayed(const Duration(milliseconds: 150));
+    var model = _offlineItems?.where((i) => i.id == item.id).first;
+    model = item;
+    await api.updateItem(item);
+    notifyListeners();
   }
+
 
 }

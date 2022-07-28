@@ -13,7 +13,7 @@ import 'package:uuid/uuid.dart';
 
 class TodoFormProvider extends ChangeNotifier {
   TextEditingController controller = TextEditingController();
-  String _importance = "Нет";
+  String _importance = "low";
 
   TodoFormProvider();
 

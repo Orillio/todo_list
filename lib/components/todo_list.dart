@@ -19,7 +19,7 @@ class _TodoListState extends State<TodoList> {
     return Consumer2<ITodoProvider, NavigationController>(
       builder: (context, provider, navController, child) {
         return FutureBuilder<List<TodoModel>>(
-          future: provider.getItemsFromNetwork(),
+          future: provider.modelsListFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Container(
@@ -54,11 +54,13 @@ class _TodoListState extends State<TodoList> {
                               onTap: () {
                                 navController.navigateToNewTodoScreen();
                               },
-                              child: Text("Новое",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelSmall
-                                      ?.copyWith(fontSize: 16)),
+                              child: Text(
+                                "Новое",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelSmall
+                                    ?.copyWith(fontSize: 16),
+                              ),
                             ),
                           ),
                         ],
