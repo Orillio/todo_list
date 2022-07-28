@@ -41,7 +41,7 @@ class _TodoListState extends State<TodoList> {
                       },
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 22),
+                      padding: const EdgeInsets.only(top: 15, bottom: 15),
                       child: Row(
                         children: [
                           const Expanded(
