@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/business/i_todo_provider.dart';
-import 'package:todo_list/components/shared/medium_title.dart';
 import 'package:todo_list/components/shared/small_label.dart';
 import 'package:todo_list/models/todo_model.dart';
 import 'package:todo_list/navigation/navigation_controller.dart';
@@ -150,7 +149,18 @@ class _TodoListItemState extends State<TodoListItem> {
                       children: [
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.6,
-                          child: MediumTitle(widget.model.text),
+                          child: Text(
+                            widget.model.text,
+                            style: widget.model.done
+                                ? Theme.of(context)
+                                    .textTheme
+                                    .labelMedium!
+                                    .copyWith(
+                                        decoration: TextDecoration.lineThrough)
+                                : Theme.of(context).textTheme.titleMedium,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                         if (widget.model.deadline != null)
                           SmallLabel(dateToString(widget.model.deadline!)),

@@ -5,12 +5,12 @@ import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/business/i_todo_provider.dart';
 import 'package:todo_list/components/shared/medium_label.dart';
+import 'package:todo_list/screens/todo_screen.dart';
 import 'package:todo_list/themes/dark_theme.dart';
 
 class TodoListHeader extends SliverPersistentHeaderDelegate {
   final double maximumExtent;
   final double minimumExtent;
-
   TodoListHeader({
     required this.minimumExtent,
     required this.maximumExtent,
@@ -20,6 +20,7 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     var model = context.watch<ITodoProvider>();
+    var visibilityModel = context.watch<VisibilityChangeNotifier>();
 
     double negativeRelationValue =
         (1 - (shrinkOffset / (maxExtent - minExtent))).clamp(0, 1);
@@ -79,9 +80,26 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
                             ),
                           ),
                         ),
-                        const Icon(
-                          Icons.visibility,
-                          color: ConstColors.colorBlue,
+                        GestureDetector(
+                          onTap: () {
+                            visibilityModel.isVisible =
+                                !visibilityModel.isVisible;
+                          },
+                          child: Builder(
+                            builder: (context) {
+                              if (visibilityModel.isVisible) {
+                                return const Icon(
+                                  Icons.visibility,
+                                  color: ConstColors.colorBlue,
+                                );
+                              } else {
+                                return const Icon(
+                                  Icons.visibility_off,
+                                  color: ConstColors.colorBlue,
+                                );
+                              }
+                            },
+                          ),
                         ),
                       ]),
                 ],

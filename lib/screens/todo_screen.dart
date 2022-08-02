@@ -12,7 +12,20 @@ class TodoScreen extends StatefulWidget {
   State<TodoScreen> createState() => _TodoScreenState();
 }
 
+class VisibilityChangeNotifier extends ChangeNotifier {
+  bool _isVisible = true;
+
+  bool get isVisible => _isVisible;
+
+  set isVisible(bool isVisible) {
+    _isVisible = isVisible;
+    notifyListeners();
+  }
+}
+
 class _TodoScreenState extends State<TodoScreen> {
+  final ValueNotifier<bool> _areCompletedTasksVisible = ValueNotifier(true);
+
   @override
   Widget build(BuildContext context) {
     var model = context.read<NavigationController>();
@@ -28,20 +41,26 @@ class _TodoScreenState extends State<TodoScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: () async {},
-        child: CustomScrollView(
-          slivers: [
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: TodoListHeader(minimumExtent: 120, maximumExtent: 230),
-            ),
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding:
-                    EdgeInsets.only(top: 20, bottom: 50, left: 8, right: 8),
-                child: TodoList(),
+        child: ChangeNotifierProvider(
+          create: (_) => VisibilityChangeNotifier(),
+          child: CustomScrollView(
+            slivers: [
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: TodoListHeader(
+                  minimumExtent: 120,
+                  maximumExtent: 230,
+                ),
               ),
-            ),
-          ],
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      top: 20, bottom: 50, left: 8, right: 8),
+                  child: TodoList(),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

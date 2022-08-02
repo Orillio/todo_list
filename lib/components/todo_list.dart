@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:todo_list/business/i_todo_provider.dart';
 import 'package:todo_list/components/shared/todo_list_item.dart';
 import 'package:todo_list/navigation/navigation_controller.dart';
+import 'package:todo_list/screens/todo_screen.dart';
 
 import '../models/todo_model.dart';
 
@@ -16,8 +17,10 @@ class TodoList extends StatefulWidget {
 class _TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
-    return Consumer2<ITodoProvider, NavigationController>(
-      builder: (context, provider, navController, child) {
+    return Consumer3<ITodoProvider, NavigationController,
+        VisibilityChangeNotifier>(
+      builder: (context, provider, navControllerProvider, visibilityProvider,
+          child) {
         return FutureBuilder<List<TodoModel>>(
           future: provider.modelsListFuture,
           builder: (context, snapshot) {
@@ -35,9 +38,13 @@ class _TodoListState extends State<TodoList> {
                       shrinkWrap: true,
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
-                        return TodoListItem(
-                          model: snapshot.data![index],
-                        );
+                        if (!snapshot.data![index].done ||
+                            visibilityProvider.isVisible) {
+                          return TodoListItem(
+                            model: snapshot.data![index],
+                          );
+                        }
+                        return const SizedBox.shrink();
                       },
                     ),
                     Padding(
@@ -52,7 +59,7 @@ class _TodoListState extends State<TodoList> {
                             flex: 5,
                             child: GestureDetector(
                               onTap: () {
-                                navController.navigateToNewTodoScreen();
+                                navControllerProvider.navigateToNewTodoScreen();
                               },
                               child: Text(
                                 "Новое",
