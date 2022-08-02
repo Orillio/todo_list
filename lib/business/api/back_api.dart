@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:todo_list/models/todo_model.dart';
@@ -112,7 +111,7 @@ class BackApi {
   }
   Future<Response> getItem(String id) async {
     var response = await request(
-      "/list/${id}",
+      "/list/$id",
       method: "GET",
     );
     return response;

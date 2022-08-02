@@ -1,6 +1,4 @@
 
-import 'package:uuid/uuid.dart';
-
 class TodoModel {
   late String id;
   late String text;
@@ -43,6 +41,28 @@ class TodoModel {
     this.createdAt = createdAt ?? this.createdAt;
     return this;
   }
+
+  TodoModel pasteFromOther({
+    String? id,
+    String? text,
+    String? color,
+    String? importance,
+    bool? done,
+    DateTime? deadline,
+    DateTime? changedAt,
+    DateTime? createdAt,
+  }) {
+    this.id = id ?? this.id;
+    this.text = text ?? this.text;
+    this.color = color ?? this.color;
+    this.importance = importance ?? this.importance;
+    this.done = done ?? this.done;
+    this.deadline = deadline ?? this.deadline;
+    this.changedAt = changedAt ?? this.changedAt;
+    this.createdAt = createdAt ?? this.createdAt;
+    return this;
+  }
+
 
   Map<String, dynamic> toMap() {
     var data = <String, dynamic>{

@@ -4,7 +4,6 @@ import 'package:todo_list/models/todo_model.dart';
 import 'i_todo_provider.dart';
 
 class ServerTodoProvider with ChangeNotifier implements ITodoProvider {
-
   static var api = BackApi();
   List<TodoModel>? _offlineItems;
 
@@ -50,7 +49,6 @@ class ServerTodoProvider with ChangeNotifier implements ITodoProvider {
     throw UnimplementedError();
   }
 
-
   @override
   Future refreshList(List<TodoModel> list) async {
     await api.updateList(list);
@@ -59,12 +57,7 @@ class ServerTodoProvider with ChangeNotifier implements ITodoProvider {
 
   @override
   Future updateItem(TodoModel item) async {
-    await Future.delayed(const Duration(milliseconds: 150));
-    var model = _offlineItems?.where((i) => i.id == item.id).first;
-    model = item;
     await api.updateItem(item);
     notifyListeners();
   }
-
-
 }
