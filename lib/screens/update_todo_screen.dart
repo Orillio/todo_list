@@ -109,8 +109,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                             ..text = provider.controller.text
                             ..deadline = provider.deadline
                             ..importance = provider.importance
-                            ..changedAt = DateTime.now()
-                          );
+                            ..changedAt = DateTime.now());
                         }
                         navController.navigateBack();
                       },

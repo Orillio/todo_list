@@ -1,4 +1,3 @@
-
 class TodoModel {
   late String id;
   late String text;
@@ -63,7 +62,6 @@ class TodoModel {
     return this;
   }
 
-
   Map<String, dynamic> toMap() {
     var data = <String, dynamic>{
       "id": id,
@@ -74,10 +72,12 @@ class TodoModel {
       "changed_at": (changedAt.millisecondsSinceEpoch / 1000).round(),
       "last_updated_by": lastUpdatedBy,
     };
-    if(deadline != null) data["deadline"] = (deadline!.millisecondsSinceEpoch / 1000).round();
-    if(color != null) data["color"] = color;
+    if (deadline != null)
+      data["deadline"] = (deadline!.millisecondsSinceEpoch / 1000).round();
+    if (color != null) data["color"] = color;
     return data;
   }
+
   TodoModel.fromMap(dynamic map) {
     id = map["id"];
     text = map["text"];
@@ -87,9 +87,8 @@ class TodoModel {
     changedAt = DateTime.fromMillisecondsSinceEpoch(map["changed_at"] * 1000);
     lastUpdatedBy = map["last_updated_by"];
 
-    if(map["deadline"] != null) deadline = DateTime.fromMillisecondsSinceEpoch(map["deadline"] * 1000);
+    if (map["deadline"] != null)
+      deadline = DateTime.fromMillisecondsSinceEpoch(map["deadline"] * 1000);
     color = map["color"];
-
-
   }
 }
