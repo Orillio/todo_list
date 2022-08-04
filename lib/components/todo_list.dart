@@ -17,12 +17,13 @@ class TodoList extends StatefulWidget {
 class _TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
-    return Consumer3<ITodoProvider, NavigationController,
+    return Consumer2<NavigationController,
         VisibilityChangeNotifier>(
-      builder: (context, provider, navControllerProvider, visibilityProvider,
-          child) {
+      builder: (context, navControllerProvider, visibilityProvider, _) {
+        var todoProvider = context.read<ITodoProvider>();
+
         return FutureBuilder<List<TodoModel>>(
-          future: provider.modelsListFuture,
+          future: todoProvider.modelsListFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Container(

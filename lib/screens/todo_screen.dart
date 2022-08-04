@@ -37,7 +37,6 @@ class _TodoScreenState extends State<TodoScreen> {
         ),
         onPressed: () {
           model.navigateToNewTodoScreen();
-          throw Exception("Testing crashlytics");
         },
       ),
       body: RefreshIndicator(

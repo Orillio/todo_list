@@ -110,79 +110,82 @@ class _TodoListItemState extends State<TodoListItem> {
       child: Padding(
         padding:
             const EdgeInsets.only(left: 10, top: 16, bottom: 16, right: 16),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                width: 20,
-                height: 20,
-                child: Theme(
-                  data: _checkboxTheme(),
-                  child: Checkbox(
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    value: widget.model.done,
-                    onChanged: (value) {
-                      model.updateItem(widget.model.changeFields(
-                        done: value,
-                      ));
-                    },
+        child: Consumer<ITodoProvider>(builder: (context, todoProvider, _) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 1,
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: Theme(
+                    data: _checkboxTheme(),
+                    child: Checkbox(
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      value: widget.model.done,
+                      onChanged: (value) {
+                        model.updateItem(widget.model.changeFields(
+                          done: value,
+                        ));
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 6,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  if (widget.model.importance != "basic")
+              Expanded(
+                flex: 6,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (widget.model.importance != "basic")
+                      Expanded(
+                        child: _importanceIcon(),
+                      ),
                     Expanded(
-                      child: _importanceIcon(),
-                    ),
-                  Expanded(
-                    flex: 8,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.6,
-                          child: Text(
-                            widget.model.text,
-                            style: widget.model.done
-                                ? Theme.of(context)
-                                    .textTheme
-                                    .labelMedium!
-                                    .copyWith(
-                                        decoration: TextDecoration.lineThrough)
-                                : Theme.of(context).textTheme.titleMedium,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
+                      flex: 8,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            child: Text(
+                              widget.model.text,
+                              style: widget.model.done
+                                  ? Theme.of(context)
+                                      .textTheme
+                                      .labelMedium!
+                                      .copyWith(
+                                          decoration:
+                                              TextDecoration.lineThrough)
+                                  : Theme.of(context).textTheme.titleMedium,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        ),
-                        if (widget.model.deadline != null)
-                          SmallLabel(dateToString(widget.model.deadline!)),
-                      ],
+                          if (widget.model.deadline != null)
+                            SmallLabel(dateToString(widget.model.deadline!)),
+                        ],
+                      ),
                     ),
-                  ),
-                  Consumer<NavigationController>(
-                    builder: (context, navController, _) {
-                      return GestureDetector(
-                        onTap: () {
-                          navController
-                              .navigateToUpdateTodoModelScreen(widget.model);
-                        },
-                        child: const Icon(Icons.info_outline),
-                      );
-                    },
-                  )
-                ],
+                    Consumer<NavigationController>(
+                      builder: (context, navController, _) {
+                        return GestureDetector(
+                          onTap: () {
+                            navController
+                                .navigateToUpdateTodoModelScreen(widget.model);
+                          },
+                          child: const Icon(Icons.info_outline),
+                        );
+                      },
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          );
+        }),
       ),
     );
   }
