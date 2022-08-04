@@ -37,6 +37,7 @@ class _TodoScreenState extends State<TodoScreen> {
         ),
         onPressed: () {
           model.navigateToNewTodoScreen();
+          throw Exception("Testing crashlytics");
         },
       ),
       body: RefreshIndicator(
@@ -54,8 +55,8 @@ class _TodoScreenState extends State<TodoScreen> {
               ),
               const SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.only(
-                      top: 20, bottom: 50, left: 8, right: 8),
+                  padding:
+                      EdgeInsets.only(top: 20, bottom: 50, left: 8, right: 8),
                   child: TodoList(),
                 ),
               ),
