@@ -1,3 +1,4 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,17 @@ class TodoListItem extends StatefulWidget {
 }
 
 class _TodoListItemState extends State<TodoListItem> {
+  late Color _importanceColor;
+
+  @override
+  void initState() {
+    var importanceColorString =
+        FirebaseRemoteConfig.instance.getString("importanceColor");
+
+    _importanceColor = Color(int.parse(importanceColorString));
+    super.initState();
+  }
+
   Widget _importanceIcon() {
     if (widget.model.importance == "basic") return const SizedBox.shrink();
     if (widget.model.importance == "important") {
@@ -24,19 +36,19 @@ class _TodoListItemState extends State<TodoListItem> {
         width: 16,
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          children: const [
+          children: [
             SizedBox(
               width: 8,
               child: Icon(
                 Icons.priority_high_rounded,
-                color: ConstColors.colorRed,
+                color: _importanceColor,
               ),
             ),
             SizedBox(
               width: 8,
               child: Icon(
                 Icons.priority_high_rounded,
-                color: ConstColors.colorRed,
+                color: _importanceColor,
               ),
             ),
           ],
@@ -60,7 +72,7 @@ class _TodoListItemState extends State<TodoListItem> {
               return ConstColors.colorGreen;
             } else {
               if (widget.model.importance == "important") {
-                return ConstColors.colorRed;
+                return _importanceColor;
               } else {
                 return ConstColors.supportSeparator;
               }

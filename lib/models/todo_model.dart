@@ -72,8 +72,9 @@ class TodoModel {
       "changed_at": (changedAt.millisecondsSinceEpoch / 1000).round(),
       "last_updated_by": lastUpdatedBy,
     };
-    if (deadline != null)
+    if (deadline != null) {
       data["deadline"] = (deadline!.millisecondsSinceEpoch / 1000).round();
+    }
     if (color != null) data["color"] = color;
     return data;
   }
@@ -87,8 +88,9 @@ class TodoModel {
     changedAt = DateTime.fromMillisecondsSinceEpoch(map["changed_at"] * 1000);
     lastUpdatedBy = map["last_updated_by"];
 
-    if (map["deadline"] != null)
+    if (map["deadline"] != null) {
       deadline = DateTime.fromMillisecondsSinceEpoch(map["deadline"] * 1000);
+    }
     color = map["color"];
   }
 }

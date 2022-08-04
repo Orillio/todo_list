@@ -45,7 +45,6 @@ class ServerTodoProvider with ChangeNotifier implements ITodoProvider {
 
   @override
   Future<List<TodoModel>> getOfflineItems() {
-    // TODO: implement getOfflineItems
     throw UnimplementedError();
   }
 

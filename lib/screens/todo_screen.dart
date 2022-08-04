@@ -24,7 +24,6 @@ class VisibilityChangeNotifier extends ChangeNotifier {
 }
 
 class _TodoScreenState extends State<TodoScreen> {
-  final ValueNotifier<bool> _areCompletedTasksVisible = ValueNotifier(true);
 
   @override
   Widget build(BuildContext context) {
