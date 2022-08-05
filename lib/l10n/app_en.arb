@@ -1,0 +1,13 @@
+{
+    "myTodos": "My Todo's",
+    "itemsDone": "Done",
+    "newItem": "New",
+    "save": "Save",
+    "whatToDo": "What do you need to do?",
+    "importance": "Importance",
+    "importanceLow": "Low",
+    "importanceBasic": "Basic",
+    "importanceHigh": "High",
+    "removeItem": "Remove",
+    "deadline": "Deadline"
+}

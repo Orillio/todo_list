@@ -10,7 +10,7 @@ import 'package:todo_list/models/todo_model.dart';
 import 'package:todo_list/navigation/navigation_controller.dart';
 import 'package:todo_list/themes/dark_theme.dart';
 import 'package:uuid/uuid.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class TodoFormProvider extends ChangeNotifier {
   TextEditingController controller = TextEditingController();
   String _importance = "low";
@@ -113,7 +113,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                         }
                         navController.navigateBack();
                       },
-                      text: "сохранить",
+                      text: AppLocalizations.of(context)!.save,
                     ),
                   )
                 ],

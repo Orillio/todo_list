@@ -12,6 +12,7 @@ import 'package:todo_list/screens/todo_screen.dart';
 import 'package:todo_list/themes/dark_theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import './firebase_options.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   runZonedGuarded<Future<void>>(
@@ -58,9 +59,10 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             supportedLocales: const [
               Locale('en', 'US'),
-              Locale('ru'),
+              // Locale('ru'),
             ],
             localizationsDelegates: const [
+              AppLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,

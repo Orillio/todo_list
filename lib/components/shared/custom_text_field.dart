@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
 
@@ -20,7 +20,7 @@ class CustomTextField extends StatelessWidget {
         decoration: InputDecoration(
           contentPadding:
               const EdgeInsets.only(bottom: 16, left: 16, top: 16, right: 16),
-          hintText: "Что нужно сделать?",
+          hintText: AppLocalizations.of(context)!.whatToDo,
           hintStyle: const TextStyle(
             color: Color.fromRGBO(237, 237, 237, 0.5),
           ),

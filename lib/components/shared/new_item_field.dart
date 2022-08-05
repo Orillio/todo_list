@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/navigation/navigation_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewItemField extends StatefulWidget {
   const NewItemField({
@@ -36,7 +37,7 @@ class _NewItemFieldState extends State<NewItemField> {
                   controller: widget.controller,
                   decoration: InputDecoration(
                     isDense: true,
-                    hintText: "Новое",
+                    hintText: AppLocalizations.of(context)!.newItem,
                     hintStyle: Theme.of(context).textTheme.labelMedium,
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.only(right: 30),

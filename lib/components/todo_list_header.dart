@@ -7,6 +7,7 @@ import 'package:todo_list/business/i_todo_provider.dart';
 import 'package:todo_list/components/shared/medium_label.dart';
 import 'package:todo_list/screens/todo_screen.dart';
 import 'package:todo_list/themes/dark_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TodoListHeader extends SliverPersistentHeaderDelegate {
   final double maximumExtent;
@@ -60,7 +61,7 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
                   Transform.translate(
                     offset: Offset(titleXOffset, titleYOffset),
                     child: Text(
-                      "Мои дела",
+                      AppLocalizations.of(context)!.myTodos,
                       style: TextStyle(
                           fontWeight: FontWeight.w500, fontSize: titleFontSize),
                     ),
@@ -76,7 +77,7 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
                           child: Opacity(
                             opacity: labelOpacity,
                             child: MediumLabel(
-                              "Выполнено - ${model.itemsDone}",
+                              "${AppLocalizations.of(context)!.itemsDone} - ${model.itemsDone}",
                             ),
                           ),
                         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../screens/update_todo_screen.dart';
 
@@ -14,27 +15,25 @@ class _ImportanceDropdownState extends State<ImportanceDropdown> {
   String importanceString = "Нет";
 
   String _importanceParsed(String imp) {
-    switch (imp) {
-      case "Нет":
-        return "low";
-      case "Низкий":
-        return "basic";
-      case "Высокий":
-        return "important";
+    if (imp == AppLocalizations.of(context)!.importanceLow) {
+      return "low";
+    } else if (imp == AppLocalizations.of(context)!.importanceBasic) {
+      return "basic";
+    } else {
+      return "important";
     }
-    return "low";
   }
 
   String _reverseImportanceParsed(String imp) {
     switch (imp) {
       case "low":
-        return "Нет";
+        return AppLocalizations.of(context)!.importanceLow;
       case "basic":
-        return "Низкий";
+        return AppLocalizations.of(context)!.importanceBasic;
       case "important":
-        return "Высокий";
+        return AppLocalizations.of(context)!.importanceHigh;
     }
-    return "Нет";
+    return AppLocalizations.of(context)!.importanceLow;
   }
 
   @override
@@ -49,7 +48,7 @@ class _ImportanceDropdownState extends State<ImportanceDropdown> {
           padding: const EdgeInsets.only(top: 8),
           child: DropdownButton<String>(
             hint: Text(
-              "Важность",
+              AppLocalizations.of(context)!.importance,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             value: null,
@@ -67,7 +66,11 @@ class _ImportanceDropdownState extends State<ImportanceDropdown> {
               model.importance = _importanceParsed(newValue);
               setState(() {});
             },
-            items: ['Нет', 'Низкий', 'Высокий'].map((value) {
+            items: [
+              AppLocalizations.of(context)!.importanceLow,
+              AppLocalizations.of(context)!.importanceBasic,
+              AppLocalizations.of(context)!.importanceHigh,
+            ].map((value) {
               return DropdownMenuItem(
                 value: value,
                 child: Text(value),

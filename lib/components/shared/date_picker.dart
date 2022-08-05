@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/components/shared/medium_title.dart';
 import 'package:todo_list/screens/update_todo_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../themes/dark_theme.dart';
 
@@ -24,7 +25,7 @@ class _DatePickerState extends State<DatePicker> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const MediumTitle("Сделать до"),
+            MediumTitle(AppLocalizations.of(context)!.deadline),
             if (model.deadlineString != null)
               Padding(
                 padding: const EdgeInsets.only(top: 5),
