@@ -1,16 +1,20 @@
-# todo_list
+# Done/Сделано
 
-A new Flutter project.
+Приложение, позволяющее записывать ваши ежедневные дела, чтобы не забыть о них.
+Проект от школы Яндекса. 
 
-## Getting Started
+Список фич:
+- Добавление, удаление, редактирование заметок
+- Заметки имеют дедлайн и тип важности (низкий, базовый, высокий) 
+- Реализован свайп. Вправо - для отметки "Выполнено", Влево - для удаления заметки.
+- Скрытие выполненных дел.
+- Интернационализация (Работает на Русском и Английском языках).
 
-This project is a starting point for a Flutter application.
+Приложение пока что не поддерживает оффлайн взаимодействие.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Фото приложения:
+<div style="display: flex; flex-direction: row;">
+  <img src="https://user-images.githubusercontent.com/62881333/183106883-2f85662e-3cdc-4347-b4e6-173abc8c4a25.png" width="300" />
+  <img src="https://user-images.githubusercontent.com/62881333/183106910-73842627-04b9-4602-832f-0c0620b12d43.png" width="300" />
+  <img src="https://user-images.githubusercontent.com/62881333/183106931-95ac6b09-3876-419f-94bb-34356df1dbaa.png" width="300" />
+</div>
