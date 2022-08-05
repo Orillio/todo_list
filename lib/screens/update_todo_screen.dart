@@ -11,6 +11,7 @@ import 'package:todo_list/navigation/navigation_controller.dart';
 import 'package:todo_list/themes/dark_theme.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class TodoFormProvider extends ChangeNotifier {
   TextEditingController controller = TextEditingController();
   String _importance = "low";
