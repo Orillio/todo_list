@@ -24,7 +24,6 @@ class ServerTodoProvider with ChangeNotifier implements ITodoProvider {
 
   @override
   Future deleteItem(TodoModel item) async {
-    await Future.delayed(const Duration(milliseconds: 150));
     await api.deleteItem(item.id);
     _offlineItems?.removeWhere((e) => e.id == item.id);
     notifyListeners();
@@ -59,4 +58,7 @@ class ServerTodoProvider with ChangeNotifier implements ITodoProvider {
     await api.updateItem(item);
     notifyListeners();
   }
+
+  @override
+  int get totalItems => _offlineItems?.length ?? 0;
 }

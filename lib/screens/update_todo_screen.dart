@@ -142,38 +142,41 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                     const Divider(
                       height: 30,
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextButton(
-                            onPressed: () {
-                              navController.navigateBack();
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.only(right: 10),
-                                    child: Icon(
-                                      Icons.delete,
-                                      color: ConstColors.colorRed,
+                    if (widget.model != null)
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextButton(
+                              onPressed: () {
+                                navController.navigateBack();
+                                todoProvider.deleteItem(widget.model!);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.only(right: 10),
+                                      child: Icon(
+                                        Icons.delete,
+                                        color: ConstColors.colorRed,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    "Удалить",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium
-                                        ?.copyWith(color: ConstColors.colorRed),
-                                  ),
-                                ],
+                                    Text(
+                                      "Удалить",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium
+                                          ?.copyWith(
+                                              color: ConstColors.colorRed),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
                     const SizedBox(height: 100)
                   ],
                 ),

@@ -79,4 +79,7 @@ class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
 
   @override
   Future<List<TodoModel>> get modelsListFuture async => _items;
+
+  @override
+  int get totalItems => _items.length;
 }

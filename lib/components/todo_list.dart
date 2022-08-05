@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/business/i_todo_provider.dart';
+import 'package:todo_list/components/shared/new_item_field.dart';
 import 'package:todo_list/components/shared/todo_list_item.dart';
-import 'package:todo_list/navigation/navigation_controller.dart';
 import 'package:todo_list/screens/todo_screen.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/todo_model.dart';
 
@@ -15,66 +16,69 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> {
+  var newItemTextContoller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return Consumer2<NavigationController,
-        VisibilityChangeNotifier>(
-      builder: (context, navControllerProvider, visibilityProvider, _) {
+    return Consumer<VisibilityChangeNotifier>(
+      builder: (context, visibilityProvider, _) {
         var todoProvider = context.read<ITodoProvider>();
-
+        context.select<ITodoProvider, int>(
+          (value) {
+            return value.totalItems;
+          },
+        );
         return FutureBuilder<List<TodoModel>>(
           future: todoProvider.modelsListFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Theme.of(context).colorScheme.secondary),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListView.builder(
-                      padding: const EdgeInsets.all(0),
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        if (!snapshot.data![index].done ||
-                            visibilityProvider.isVisible) {
-                          return TodoListItem(
-                            model: snapshot.data![index],
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15, bottom: 15),
-                      child: Row(
-                        children: [
-                          const Expanded(
-                            flex: 1,
-                            child: SizedBox.shrink(),
-                          ),
-                          Expanded(
-                            flex: 5,
-                            child: GestureDetector(
-                              onTap: () {
-                                navControllerProvider.navigateToNewTodoScreen();
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  color: Theme.of(context).colorScheme.secondary,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListView.builder(
+                        padding: const EdgeInsets.all(0),
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.length + 1,
+                        itemBuilder: (context, index) {
+                          if (index == snapshot.data!.length) {
+                            return Focus(
+                              onFocusChange: (value) {
+                                if (!value &&
+                                    newItemTextContoller.text.isNotEmpty) {
+                                  todoProvider.addItem(TodoModel(
+                                    id: const Uuid().v4(),
+                                    lastUpdatedBy: const Uuid().v4(),
+                                    text: newItemTextContoller.text,
+                                    done: false,
+                                    importance: "basic",
+                                    createdAt: DateTime.now(),
+                                    changedAt: DateTime.now(),
+                                  ));
+                                  newItemTextContoller.clear();
+                                }
                               },
-                              child: Text(
-                                "Новое",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelSmall
-                                    ?.copyWith(fontSize: 16),
+                              child: NewItemField(
+                                controller: newItemTextContoller,
                               ),
-                            ),
-                          ),
-                        ],
+                            );
+                          }
+                          if (!snapshot.data![index].done ||
+                              visibilityProvider.isVisible) {
+                            return TodoListItem(
+                              model: snapshot.data![index],
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
                       ),
-                    )
-                  ],
+                    ],
+                  ),
                 ),
               );
             } else {

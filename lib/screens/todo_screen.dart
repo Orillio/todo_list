@@ -24,7 +24,6 @@ class VisibilityChangeNotifier extends ChangeNotifier {
 }
 
 class _TodoScreenState extends State<TodoScreen> {
-
   @override
   Widget build(BuildContext context) {
     var model = context.read<NavigationController>();
@@ -38,27 +37,32 @@ class _TodoScreenState extends State<TodoScreen> {
           model.navigateToNewTodoScreen();
         },
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {},
-        child: ChangeNotifierProvider(
-          create: (_) => VisibilityChangeNotifier(),
-          child: CustomScrollView(
-            slivers: [
-              SliverPersistentHeader(
-                pinned: true,
-                delegate: TodoListHeader(
-                  minimumExtent: 120,
-                  maximumExtent: 230,
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: RefreshIndicator(
+          onRefresh: () async {},
+          child: ChangeNotifierProvider(
+            create: (_) => VisibilityChangeNotifier(),
+            child: CustomScrollView(
+              slivers: [
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: TodoListHeader(
+                    minimumExtent: 120,
+                    maximumExtent: 230,
+                  ),
                 ),
-              ),
-              const SliverToBoxAdapter(
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(top: 20, bottom: 50, left: 8, right: 8),
-                  child: TodoList(),
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.only(top: 20, bottom: 50, left: 8, right: 8),
+                    child: TodoList(),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
