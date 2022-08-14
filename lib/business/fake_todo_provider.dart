@@ -45,19 +45,10 @@ class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
     notifyListeners();
   }
 
-  @override
-  Future<TodoModel> getConcreteItem(String id) async {
-    return _items.firstWhere((item) => item.id == id);
-  }
 
   @override
-  Future<List<TodoModel>> getItemsFromNetwork() async {
+  Future<List<TodoModel>> getItems() async {
     await Future.delayed(const Duration(seconds: 2));
-    return _items;
-  }
-
-  @override
-  Future<List<TodoModel>> getOfflineItems() async {
     return _items;
   }
 

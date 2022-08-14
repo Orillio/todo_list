@@ -70,39 +70,40 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
                     height: 10,
                   ),
                   Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Transform.translate(
-                          offset: Offset(labelXOffset, labelYOffset),
-                          child: Opacity(
-                            opacity: labelOpacity,
-                            child: MediumLabel(
-                              "${AppLocalizations.of(context)!.itemsDone} - ${model.itemsDone}",
-                            ),
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Transform.translate(
+                        offset: Offset(labelXOffset, labelYOffset),
+                        child: Opacity(
+                          opacity: labelOpacity,
+                          child: MediumLabel(
+                            "${AppLocalizations.of(context)!.itemsDone} - ${model.itemsDone}",
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            visibilityModel.isVisible =
-                                !visibilityModel.isVisible;
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          visibilityModel.isVisible =
+                              !visibilityModel.isVisible;
+                        },
+                        child: Builder(
+                          builder: (context) {
+                            if (visibilityModel.isVisible) {
+                              return const Icon(
+                                Icons.visibility,
+                                color: ConstColors.colorBlue,
+                              );
+                            } else {
+                              return const Icon(
+                                Icons.visibility_off,
+                                color: ConstColors.colorBlue,
+                              );
+                            }
                           },
-                          child: Builder(
-                            builder: (context) {
-                              if (visibilityModel.isVisible) {
-                                return const Icon(
-                                  Icons.visibility,
-                                  color: ConstColors.colorBlue,
-                                );
-                              } else {
-                                return const Icon(
-                                  Icons.visibility_off,
-                                  color: ConstColors.colorBlue,
-                                );
-                              }
-                            },
-                          ),
                         ),
-                      ]),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

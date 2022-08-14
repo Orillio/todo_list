@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:platform_device_id/platform_device_id.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/business/i_todo_provider.dart';
 import 'package:todo_list/components/shared/new_item_field.dart';
@@ -48,18 +49,20 @@ class _TodoListState extends State<TodoList> {
                         itemBuilder: (context, index) {
                           if (index == snapshot.data!.length) {
                             return Focus(
-                              onFocusChange: (value) {
+                              onFocusChange: (value) async {
                                 if (!value &&
                                     newItemTextContoller.text.isNotEmpty) {
-                                  todoProvider.addItem(TodoModel(
-                                    id: const Uuid().v4(),
-                                    lastUpdatedBy: const Uuid().v4(),
-                                    text: newItemTextContoller.text,
-                                    done: false,
-                                    importance: "basic",
-                                    createdAt: DateTime.now(),
-                                    changedAt: DateTime.now(),
-                                  ));
+                                  todoProvider.addItem(
+                                    TodoModel(
+                                      id: const Uuid().v4(),
+                                      lastUpdatedBy: (await PlatformDeviceId.getDeviceId) ?? const Uuid().v4(),
+                                      text: newItemTextContoller.text,
+                                      done: false,
+                                      importance: "basic",
+                                      createdAt: DateTime.now(),
+                                      changedAt: DateTime.now(),
+                                    ),
+                                  );
                                   newItemTextContoller.clear();
                                 }
                               },

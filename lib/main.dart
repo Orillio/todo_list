@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/business/i_todo_provider.dart';
 import 'package:todo_list/business/server_todo_provider.dart';
@@ -13,6 +15,8 @@ import 'package:todo_list/themes/dark_theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import './firebase_options.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'models/todo_model.dart';
 
 void main() async {
   runZonedGuarded<Future<void>>(
@@ -29,11 +33,20 @@ void main() async {
         minimumFetchInterval: const Duration(seconds: 5),
       ));
 
-      await remoteConfig.fetchAndActivate();
+      remoteConfig.setDefaults(
+          {"importanceColor": ConstColors.colorRed.value.toString()});
+      try {
+        await remoteConfig.fetchAndActivate();
+      } catch (e) {
+        Logger().e("Couldn't fecth remote configs");
+      }
 
       FlutterError.onError =
           FirebaseCrashlytics.instance.recordFlutterFatalError;
 
+      await Hive.initFlutter();
+      Hive.registerAdapter(TodoModelAdapter());
+      await Hive.openBox<TodoModel>("todoBox");
       runApp(const MyApp());
     },
     (error, stack) =>
@@ -49,8 +62,7 @@ class MyApp extends StatelessWidget {
     //Wrapping MaterialApp in MultiProvider to access models in all routes.
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<ITodoProvider>(
-            create: (_) => ServerTodoProvider()),
+        ChangeNotifierProvider<ITodoProvider>(create: (_) => TodoProvider()),
         ListenableProvider(create: (_) => NavigationController()),
       ],
       child: Builder(
@@ -59,7 +71,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             supportedLocales: const [
               Locale('en', 'US'),
-              // Locale('ru'),
+              Locale('ru'),
             ],
             localizationsDelegates: const [
               AppLocalizations.delegate,

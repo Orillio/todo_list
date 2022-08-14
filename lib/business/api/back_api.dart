@@ -87,7 +87,7 @@ class BackApi {
         method: "PATCH",
         data: fromListTemplate(model.map((e) => e.toMap()).toList()));
     _revision = _revision! + 1;
-    Logger().i("Following item has been added:\n${response.data}");
+    Logger().i("Following list has been merged:\n${response.data}");
   }
 
   Future deleteItem(String id) async {

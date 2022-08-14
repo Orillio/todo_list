@@ -109,9 +109,8 @@ class _TodoListItemState extends State<TodoListItem> {
       ),
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.startToEnd) {
-          model.updateItem(widget.model.changeFields(
-            done: true,
-          ));
+          model.updateItem(
+              widget.model.changeFields(done: true, changedAt: DateTime.now()));
           return false;
         } else {
           model.deleteItem(widget.model);
@@ -139,6 +138,7 @@ class _TodoListItemState extends State<TodoListItem> {
                       onChanged: (value) {
                         model.updateItem(widget.model.changeFields(
                           done: value,
+                          changedAt: DateTime.now(),
                         ));
                       },
                     ),

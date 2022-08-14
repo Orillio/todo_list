@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:platform_device_id/platform_device_id.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/business/i_todo_provider.dart';
 import 'package:todo_list/components/shared/custom_text_field.dart';
@@ -92,12 +93,12 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                   Padding(
                     padding: const EdgeInsets.only(right: 5),
                     child: ActionButton(
-                      onPress: () {
+                      onPress: () async {
                         if (provider.controller.text.isEmpty) return;
                         if (widget.model == null) {
                           todoProvider.addItem(TodoModel(
                             id: const Uuid().v4(),
-                            lastUpdatedBy: const Uuid().v4(),
+                            lastUpdatedBy: (await PlatformDeviceId.getDeviceId) ?? const Uuid().v4(),
                             text: provider.controller.text,
                             done: false,
                             importance: provider.importance,
@@ -164,7 +165,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                                       ),
                                     ),
                                     Text(
-                                      "Удалить",
+                                      AppLocalizations.of(context)!.removeItem,
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleMedium
