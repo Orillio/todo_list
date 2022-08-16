@@ -2,7 +2,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_list/business/i_todo_provider.dart';
+import 'package:todo_list/business/provider_models.dart/tasks_provider.dart';
 import 'package:todo_list/components/shared/small_label.dart';
 import 'package:todo_list/models/todo_model.dart';
 import 'package:todo_list/navigation/navigation_controller.dart';
@@ -87,7 +87,7 @@ class _TodoListItemState extends State<TodoListItem> {
 
   @override
   Widget build(BuildContext context) {
-    var model = context.read<ITodoProvider>();
+    var model = context.read<TasksProvider>();
     return Dismissible(
       background: Container(
         alignment: Alignment.centerLeft,
@@ -121,7 +121,7 @@ class _TodoListItemState extends State<TodoListItem> {
       child: Padding(
         padding:
             const EdgeInsets.only(left: 10, top: 16, bottom: 16, right: 16),
-        child: Consumer<ITodoProvider>(builder: (context, todoProvider, _) {
+        child: Consumer<TasksProvider>(builder: (context, todoProvider, _) {
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

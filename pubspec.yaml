@@ -27,6 +27,7 @@ dependencies:
   hive_flutter: ^1.1.0
   connectivity_plus: ^2.3.6+1
   platform_device_id: ^1.0.1
+  get_it: ^7.2.0
 
 dev_dependencies:
   hive_generator:

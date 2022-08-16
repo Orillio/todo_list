@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_list/models/todo_model.dart';
 import 'package:todo_list/screens/update_todo_screen.dart';
 
-class NavigationController extends ChangeNotifier {
+class NavigationController {
   final GlobalKey<NavigatorState> _key = GlobalKey();
   GlobalKey<NavigatorState> get key => _key;
 

@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_list/business/i_todo_provider.dart';
-import 'package:todo_list/business/server_todo_provider.dart';
+import 'package:todo_list/business/di/todo_app_services.dart';
+import 'package:todo_list/business/provider_models.dart/tasks_provider.dart';
 import 'package:todo_list/navigation/navigation_controller.dart';
 import 'package:todo_list/screens/todo_screen.dart';
 import 'package:todo_list/themes/dark_theme.dart';
@@ -40,13 +40,19 @@ void main() async {
       } catch (e) {
         Logger().e("Couldn't fecth remote configs");
       }
-
       FlutterError.onError =
           FirebaseCrashlytics.instance.recordFlutterFatalError;
+
 
       await Hive.initFlutter();
       Hive.registerAdapter(TodoModelAdapter());
       await Hive.openBox<TodoModel>("todoBox");
+      await Hive.openBox<int>("revision");
+
+      TodoAppServices.registerApi();
+      TodoAppServices.registerLocalTasksRepository();
+      TodoAppServices.registerRemoteTasksRepository();
+
       runApp(const MyApp());
     },
     (error, stack) =>
@@ -62,8 +68,7 @@ class MyApp extends StatelessWidget {
     //Wrapping MaterialApp in MultiProvider to access models in all routes.
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<ITodoProvider>(create: (_) => TodoProvider()),
-        ListenableProvider(create: (_) => NavigationController()),
+        ChangeNotifierProvider(create: (_) => TasksProvider()),
       ],
       child: Builder(
         builder: (context) {

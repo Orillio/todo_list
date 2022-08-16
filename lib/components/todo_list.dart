@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:platform_device_id/platform_device_id.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_list/business/i_todo_provider.dart';
+import 'package:todo_list/business/provider_models.dart/tasks_provider.dart';
 import 'package:todo_list/components/shared/new_item_field.dart';
 import 'package:todo_list/components/shared/todo_list_item.dart';
 import 'package:todo_list/screens/todo_screen.dart';
@@ -19,81 +19,78 @@ class TodoList extends StatefulWidget {
 class _TodoListState extends State<TodoList> {
   var newItemTextContoller = TextEditingController();
 
+  Future<List<TodoModel>>? todoList;
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<VisibilityChangeNotifier>(
-      builder: (context, visibilityProvider, _) {
-        var todoProvider = context.read<ITodoProvider>();
-        context.select<ITodoProvider, int>(
-          (value) {
-            return value.totalItems;
-          },
-        );
-        return FutureBuilder<List<TodoModel>>(
-          future: todoProvider.modelsListFuture,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  color: Theme.of(context).colorScheme.secondary,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ListView.builder(
-                        padding: const EdgeInsets.all(0),
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: snapshot.data!.length + 1,
-                        itemBuilder: (context, index) {
-                          if (index == snapshot.data!.length) {
-                            return Focus(
-                              onFocusChange: (value) async {
-                                if (!value &&
-                                    newItemTextContoller.text.isNotEmpty) {
-                                  todoProvider.addItem(
-                                    TodoModel(
-                                      id: const Uuid().v4(),
-                                      lastUpdatedBy: (await PlatformDeviceId.getDeviceId) ?? const Uuid().v4(),
-                                      text: newItemTextContoller.text,
-                                      done: false,
-                                      importance: "basic",
-                                      createdAt: DateTime.now(),
-                                      changedAt: DateTime.now(),
-                                    ),
-                                  );
-                                  newItemTextContoller.clear();
-                                }
-                              },
-                              child: NewItemField(
-                                controller: newItemTextContoller,
+    var todoProvider = context.read<TasksProvider>();
+    todoList ??= todoProvider.getTodoList();
+
+    return FutureBuilder<List<TodoModel>>(
+      future: todoList,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              color: Theme.of(context).colorScheme.secondary,
+              child: Consumer<VisibilityChangeNotifier>(
+                  builder: (context, visibilityProvider, _) {
+                context.select<TasksProvider, int>((value) {
+                  return value.totalItems;
+                });
+                return ListView.builder(
+                  padding: const EdgeInsets.all(0),
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: snapshot.data!.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == snapshot.data!.length) {
+                      return Focus(
+                        onFocusChange: (value) async {
+                          if (!value && newItemTextContoller.text.isNotEmpty) {
+                            todoProvider.addItem(
+                              TodoModel(
+                                id: const Uuid().v4(),
+                                lastUpdatedBy:
+                                    (await PlatformDeviceId.getDeviceId) ??
+                                        const Uuid().v4(),
+                                text: newItemTextContoller.text,
+                                done: false,
+                                importance: "basic",
+                                createdAt: DateTime.now(),
+                                changedAt: DateTime.now(),
                               ),
                             );
+                            newItemTextContoller.clear();
                           }
-                          if (!snapshot.data![index].done ||
-                              visibilityProvider.isVisible) {
-                            return TodoListItem(
-                              model: snapshot.data![index],
-                            );
-                          }
-                          return const SizedBox.shrink();
                         },
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            } else {
-              return const Padding(
-                padding: EdgeInsets.only(top: 100),
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
-          },
-        );
+                        child: NewItemField(
+                          controller: newItemTextContoller,
+                        ),
+                      );
+                    }
+                    if (!snapshot.data![index].done ||
+                        visibilityProvider.isVisible) {
+                      return TodoListItem(
+                        model: snapshot.data![index],
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                );
+              }),
+            ),
+          );
+        } else {
+          return const Padding(
+            padding: EdgeInsets.only(top: 100),
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
       },
     );
   }

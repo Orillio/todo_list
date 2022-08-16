@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:todo_list/models/todo_model.dart';
 import 'package:uuid/uuid.dart';
-import 'i_todo_provider.dart';
+import 'tasks_repository.dart';
 
-class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
+class FakeTodoProvider implements TasksRepository {
   late final List<TodoModel> _items;
 
   FakeTodoProvider() {
@@ -30,24 +29,18 @@ class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
   }
 
   @override
-  int get itemsDone => _items.where((element) => element.done).length;
-
-  @override
   Future addItem(TodoModel item) async {
     _items.add(item);
-    notifyListeners();
   }
 
   @override
   Future deleteItem(TodoModel item) async {
     await Future.delayed(const Duration(milliseconds: 200));
     _items.remove(item);
-    notifyListeners();
   }
 
-
   @override
-  Future<List<TodoModel>> getItems() async {
+  Future<List<TodoModel>> getTodoList() async {
     await Future.delayed(const Duration(seconds: 2));
     return _items;
   }
@@ -56,7 +49,6 @@ class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
   Future refreshList(List<TodoModel> list) async {
     _items.clear();
     _items.addAll(list);
-    notifyListeners();
   }
 
   @override
@@ -65,12 +57,10 @@ class FakeTodoProvider with ChangeNotifier implements ITodoProvider {
     var model = _items.where((i) => i.id == item.id).first;
     model = item;
     item = model;
-    notifyListeners();
   }
 
   @override
-  Future<List<TodoModel>> get modelsListFuture async => _items;
-
-  @override
-  int get totalItems => _items.length;
+  Future<int> getRevision() async {
+    return 0;
+  }
 }

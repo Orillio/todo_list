@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:platform_device_id/platform_device_id.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_list/business/i_todo_provider.dart';
+import 'package:todo_list/business/provider_models.dart/tasks_provider.dart';
 import 'package:todo_list/components/shared/custom_text_field.dart';
 import 'package:todo_list/components/shared/date_picker.dart';
 import 'package:todo_list/components/shared/importance_dropdown.dart';
@@ -74,7 +74,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
           return TodoFormProvider.fromOldModel(widget.model!);
         }
       },
-      child: Consumer3<TodoFormProvider, NavigationController, ITodoProvider>(
+      child: Consumer3<TodoFormProvider, NavigationController, TasksProvider>(
         builder: (context, provider, navController, todoProvider, child) {
           return GestureDetector(
             onTap: FocusScope.of(context).unfocus,
@@ -98,7 +98,9 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                         if (widget.model == null) {
                           todoProvider.addItem(TodoModel(
                             id: const Uuid().v4(),
-                            lastUpdatedBy: (await PlatformDeviceId.getDeviceId) ?? const Uuid().v4(),
+                            lastUpdatedBy:
+                                (await PlatformDeviceId.getDeviceId) ??
+                                    const Uuid().v4(),
                             text: provider.controller.text,
                             done: false,
                             importance: provider.importance,

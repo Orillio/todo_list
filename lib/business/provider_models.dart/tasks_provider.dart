@@ -1,0 +1,79 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
+import 'package:todo_list/models/todo_model.dart';
+import '../repository/local_tasks_repository.dart';
+import '../repository/remote_tasks_repository.dart';
+
+class TasksProvider with ChangeNotifier {
+  List<TodoModel>? _tasks;
+  List<TodoModel>? get tasks => _tasks;
+
+  late RemoteTasksRepository _remoteRepository;
+  late LocalTasksRepository _localRepository;
+
+  TasksProvider() {
+    _remoteRepository = GetIt.I<RemoteTasksRepository>();
+    _localRepository = GetIt.I<LocalTasksRepository>();
+  }
+
+  Future<List<TodoModel>> getTodoList() async {
+    try {
+      var remoteRevision = await _remoteRepository.getRevision();
+      var localRevision = await _localRepository.getRevision();
+
+      if (localRevision < remoteRevision) {
+        var tasksList = await _remoteRepository.getTodoList();
+        await _localRepository.refreshList(tasksList);
+      } else if (localRevision > remoteRevision) {
+        var tasksList = await _localRepository.getTodoList();
+        await _remoteRepository.refreshList(tasksList);
+      }
+      _localRepository.setRevision(remoteRevision);
+      localRevision = remoteRevision;
+
+      _tasks = List.from(await _localRepository.getTodoList());
+      return tasks!;
+    } catch (e) {
+      _tasks = List.from(await _localRepository.getTodoList());
+      return _tasks!;
+    }
+  }
+
+  Future addItem(TodoModel item) async {
+    await _localRepository.addItem(item);
+    try {
+      await _remoteRepository.addItem(item);
+    } catch (e) {
+      Logger().e("Failed to add item on server");
+    }
+    _tasks?.add(item);
+    notifyListeners();
+  }
+
+  Future deleteItem(TodoModel item) async {
+    await _localRepository.deleteItem(item);
+    try {
+      await _remoteRepository.deleteItem(item);
+    } catch (e) {
+      Logger().e("Failed to delete item on server");
+    }
+    _tasks?.remove(item);
+    notifyListeners();
+  }
+
+  Future updateItem(TodoModel item) async {
+    _localRepository.updateItem(item);
+    try {
+      await _remoteRepository.updateItem(item);
+    } on DioError {
+      Logger().e("Failed to update item on server\n");
+    }
+    _tasks?.firstWhere((element) => element.id == item.id).pasteFromOther(item);
+    notifyListeners();
+  }
+
+  int get totalItems => _tasks?.length ?? 0;
+  int get itemsDone => _tasks?.where((e) => e.done).length ?? 0;
+}
