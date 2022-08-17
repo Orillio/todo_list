@@ -24,7 +24,7 @@ class RemoteTasksRepository implements TasksRepository {
 
   @override
   Future<List<TodoModel>> getTodoList() async {
-    return await _api.getTasksList();
+    return _api.getTasksList();
   }
 
   @override
@@ -39,7 +39,7 @@ class RemoteTasksRepository implements TasksRepository {
   
   @override
   Future<int> getRevision() async {
-    return await _api.getUpToDateRevision();
+    return _api.getUpToDateRevision();
   }
 
 }
