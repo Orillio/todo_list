@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'models/todo_model.dart';
 
-void main() async {
+void main() {
   runZonedGuarded<Future<void>>(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,7 @@ void main() async {
       ));
 
       remoteConfig.setDefaults(
-          {"importanceColor": ConstColors.colorRed.value.toString()});
+          {"importanceColor": ConstDarkColors.colorRed.value.toString()});
       try {
         await remoteConfig.fetchAndActivate();
       } catch (e) {
@@ -42,7 +43,6 @@ void main() async {
       }
       FlutterError.onError =
           FirebaseCrashlytics.instance.recordFlutterFatalError;
-
 
       await Hive.initFlutter();
       Hive.registerAdapter(TodoModelAdapter());
@@ -52,6 +52,7 @@ void main() async {
       TodoAppServices.registerApi();
       TodoAppServices.registerLocalTasksRepository();
       TodoAppServices.registerRemoteTasksRepository();
+      TodoAppServices.registerNavigationController();
 
       runApp(const MyApp());
     },
@@ -70,28 +71,24 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => TasksProvider()),
       ],
-      child: Builder(
-        builder: (context) {
-          var navProvider = context.read<NavigationController>();
-          return MaterialApp(
-            supportedLocales: const [
-              Locale('en', 'US'),
-              Locale('ru'),
-            ],
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            navigatorKey: navProvider.key,
-            debugShowCheckedModeBanner: false,
-            title: 'TodoList',
-            themeMode: ThemeMode.dark,
-            darkTheme: darkTheme,
-            home: const TodoScreen(),
-          );
-        },
+      child: MaterialApp(
+        supportedLocales: const [
+          Locale('en', 'US'),
+          Locale('ru'),
+        ],
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        navigatorKey: GetIt.I<NavigationController>().key,
+        debugShowCheckedModeBanner: false,
+        title: 'TodoList',
+        themeMode: ThemeMode.system,
+        darkTheme: darkTheme,
+        theme: lightTheme,
+        home: const TodoScreen(),
       ),
     );
   }

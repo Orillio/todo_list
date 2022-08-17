@@ -1,5 +1,6 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/business/provider_models.dart/tasks_provider.dart';
@@ -65,16 +66,16 @@ class _TodoListItemState extends State<TodoListItem> {
   ThemeData _checkboxTheme() {
     return darkTheme.copyWith(
       checkboxTheme: CheckboxThemeData(
-        checkColor: MaterialStateProperty.all(ConstColors.backSecondary),
+        checkColor: MaterialStateProperty.all(Theme.of(context).appBarTheme.backgroundColor),
         fillColor: MaterialStateProperty.resolveWith(
           (states) {
             if (states.contains(MaterialState.selected)) {
-              return ConstColors.colorGreen;
+              return Theme.of(context).textTheme.displayMedium!.color;
             } else {
               if (widget.model.importance == "important") {
                 return _importanceColor;
               } else {
-                return ConstColors.supportSeparator;
+                return Theme.of(context).iconTheme.color;
               }
             }
           },
@@ -92,7 +93,7 @@ class _TodoListItemState extends State<TodoListItem> {
       background: Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.only(left: 30),
-        color: ConstColors.colorGreen,
+        color: Theme.of(context).textTheme.displayMedium!.color,
         child: const Icon(
           Icons.check,
           color: Colors.white,
@@ -101,7 +102,7 @@ class _TodoListItemState extends State<TodoListItem> {
       secondaryBackground: Container(
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 30),
-        color: ConstColors.colorRed,
+        color: Theme.of(context).textTheme.displaySmall!.color,
         child: const Icon(
           Icons.delete,
           color: Colors.white,
@@ -181,17 +182,13 @@ class _TodoListItemState extends State<TodoListItem> {
                         ],
                       ),
                     ),
-                    Consumer<NavigationController>(
-                      builder: (context, navController, _) {
-                        return GestureDetector(
-                          onTap: () {
-                            navController
-                                .navigateToUpdateTodoModelScreen(widget.model);
-                          },
-                          child: const Icon(Icons.info_outline),
-                        );
+                    GestureDetector(
+                      onTap: () {
+                        GetIt.I<NavigationController>()
+                            .navigateToUpdateTodoModelScreen(widget.model);
                       },
-                    )
+                      child: const Icon(Icons.info_outline),
+                    ),
                   ],
                 ),
               ),

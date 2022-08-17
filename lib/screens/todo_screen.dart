@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/components/todo_list.dart';
 import 'package:todo_list/navigation/navigation_controller.dart';
@@ -26,7 +27,6 @@ class VisibilityChangeNotifier extends ChangeNotifier {
 class _TodoScreenState extends State<TodoScreen> {
   @override
   Widget build(BuildContext context) {
-    var model = context.read<NavigationController>();
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: const Icon(
@@ -34,7 +34,7 @@ class _TodoScreenState extends State<TodoScreen> {
           color: Colors.white,
         ),
         onPressed: () {
-          model.navigateToNewTodoScreen();
+          GetIt.I<NavigationController>().navigateToNewTodoScreen();
         },
       ),
       body: GestureDetector(

@@ -43,35 +43,38 @@ class TasksProvider with ChangeNotifier {
 
   Future addItem(TodoModel item) async {
     await _localRepository.addItem(item);
+    _tasks?.add(item);
+    notifyListeners();
+
     try {
       await _remoteRepository.addItem(item);
     } catch (e) {
       Logger().e("Failed to add item on server");
     }
-    _tasks?.add(item);
-    notifyListeners();
   }
 
   Future deleteItem(TodoModel item) async {
     await _localRepository.deleteItem(item);
+    _tasks?.remove(item);
+    notifyListeners();
+
     try {
       await _remoteRepository.deleteItem(item);
     } catch (e) {
       Logger().e("Failed to delete item on server");
     }
-    _tasks?.remove(item);
-    notifyListeners();
   }
 
   Future updateItem(TodoModel item) async {
     _localRepository.updateItem(item);
+    _tasks?.firstWhere((element) => element.id == item.id).pasteFromOther(item);
+    notifyListeners();
+
     try {
       await _remoteRepository.updateItem(item);
     } on DioError {
       Logger().e("Failed to update item on server\n");
     }
-    _tasks?.firstWhere((element) => element.id == item.id).pasteFromOther(item);
-    notifyListeners();
   }
 
   int get totalItems => _tasks?.length ?? 0;

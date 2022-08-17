@@ -8,37 +8,48 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      minLines: 4,
-      maxLines: null,
-      controller: controller,
-      textAlignVertical: TextAlignVertical.top,
-      cursorColor: const Color.fromRGBO(237, 237, 237, 0.5),
-      style: const TextStyle(
-        height: 24 / 16,
-        fontSize: 16,
-      ),
-      decoration: InputDecoration(
-        contentPadding:
-            const EdgeInsets.only(bottom: 16, left: 16, top: 16, right: 16),
-        hintText: AppLocalizations.of(context)!.whatToDo,
-        hintStyle: const TextStyle(
-          color: Color.fromRGBO(237, 237, 237, 0.5),
+    return Card(
+      margin: EdgeInsets.zero,
+      elevation: 2,
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      child: TextField(
+        minLines: 4,
+        maxLines: null,
+        controller: controller,
+        textAlignVertical: TextAlignVertical.top,
+        style: const TextStyle(
+          height: 24 / 16,
+          fontSize: 16,
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(
-            color: Color(0xFF111111),
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.only(bottom: 16, left: 16, top: 16, right: 16),
+          hintText: AppLocalizations.of(context)!.whatToDo,
+          hintStyle: TextStyle(
+            color: Theme.of(context).textTheme.labelSmall!.color,
           ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(
-            color: Color(0xFF111111),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(
+              color: Colors.transparent,
+            ),
           ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(
+              color: Colors.transparent,
+            ),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(
+              color: Colors.transparent,
+            ),
+          ),
+          filled: true,
+          fillColor: Theme.of(context).appBarTheme.backgroundColor,
         ),
-        filled: true,
-        fillColor: Theme.of(context).appBarTheme.backgroundColor,
       ),
     );
   }

@@ -5,8 +5,6 @@ import 'package:todo_list/components/shared/medium_title.dart';
 import 'package:todo_list/screens/update_todo_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../themes/dark_theme.dart';
-
 class DatePicker extends StatefulWidget {
   const DatePicker({Key? key}) : super(key: key);
 
@@ -32,7 +30,7 @@ class _DatePickerState extends State<DatePicker> {
                 child: Text(
                   model.deadlineString!,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: ConstColors.colorBlue,
+                        color: Theme.of(context).textTheme.displayLarge!.color,
                       ),
                 ),
               )

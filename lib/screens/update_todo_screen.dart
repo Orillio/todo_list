@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:platform_device_id/platform_device_id.dart';
 import 'package:provider/provider.dart';
@@ -64,6 +65,14 @@ class UpdateTodoScreen extends StatefulWidget {
 }
 
 class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
+  late NavigationController _navController;
+
+  @override
+  void initState() {
+    super.initState();
+    _navController = GetIt.I<NavigationController>();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -74,8 +83,8 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
           return TodoFormProvider.fromOldModel(widget.model!);
         }
       },
-      child: Consumer3<TodoFormProvider, NavigationController, TasksProvider>(
-        builder: (context, provider, navController, todoProvider, child) {
+      child: Consumer2<TodoFormProvider, TasksProvider>(
+        builder: (context, provider, todoProvider, child) {
           return GestureDetector(
             onTap: FocusScope.of(context).unfocus,
             child: Scaffold(
@@ -83,10 +92,10 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                 elevation: 0,
                 backgroundColor: Colors.transparent,
                 leading: GestureDetector(
-                  onTap: () => navController.navigateBack(),
-                  child: const Icon(
+                  onTap: () => _navController.navigateBack(),
+                  child: Icon(
                     Icons.close,
-                    color: Colors.white,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
                 actions: [
@@ -115,7 +124,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                             ..importance = provider.importance
                             ..changedAt = DateTime.now());
                         }
-                        navController.navigateBack();
+                        _navController.navigateBack();
                       },
                       text: AppLocalizations.of(context)!.save,
                     ),
@@ -136,15 +145,17 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                           ),
                           const ImportanceDropdown(),
                           const SizedBox(height: 16),
-                          const Divider(
+                          Divider(
                             height: 30,
+                            color: Theme.of(context).iconTheme.color,
                           ),
                           const DatePicker(),
                         ],
                       ),
                     ),
-                    const Divider(
+                    Divider(
                       height: 30,
+                      color: Theme.of(context).iconTheme.color,
                     ),
                     if (widget.model != null)
                       Row(
@@ -152,7 +163,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                           Expanded(
                             child: TextButton(
                               onPressed: () {
-                                navController.navigateBack();
+                                _navController.navigateBack();
                                 todoProvider.deleteItem(widget.model!);
                               },
                               child: Padding(
@@ -163,7 +174,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                                       padding: EdgeInsets.only(right: 10),
                                       child: Icon(
                                         Icons.delete,
-                                        color: ConstColors.colorRed,
+                                        color: ConstDarkColors.colorRed,
                                       ),
                                     ),
                                     Text(
@@ -172,7 +183,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                                           .textTheme
                                           .titleMedium
                                           ?.copyWith(
-                                              color: ConstColors.colorRed),
+                                              color: ConstDarkColors.colorRed),
                                     ),
                                   ],
                                 ),

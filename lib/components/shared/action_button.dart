@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/themes/dark_theme.dart';
 
 class ActionButton extends StatelessWidget {
   final String text;
@@ -18,8 +17,8 @@ class ActionButton extends StatelessWidget {
       onPressed: onPress,
       child: Text(
         text.toUpperCase(),
-        style: const TextStyle(
-          color: ConstColors.colorBlue,
+        style: TextStyle(
+          color: Theme.of(context).textTheme.displayLarge!.color,
         ),
       ),
     );

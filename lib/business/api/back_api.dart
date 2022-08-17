@@ -4,9 +4,24 @@ import 'package:todo_list/business/api/api.dart';
 import 'package:todo_list/models/todo_model.dart';
 
 class BackApi implements Api {
-  static const _baseUrl = "https://beta.mrdekk.ru/todobackend";
+  BackApi._internal();
+
   static final BackApi _instance = BackApi._internal();
+
+  factory BackApi() {
+    return _instance;
+  }
+
+  static const _baseUrl = "https://beta.mrdekk.ru/todobackend";
   static int? _revision;
+
+  static final _logger = Logger();
+
+  static final Dio _dio = Dio(
+    BaseOptions(
+      baseUrl: _baseUrl,
+    ),
+  );
 
   Map<String, dynamic> fromItemTemplate(Map<String, dynamic> data) {
     return {
@@ -20,15 +35,6 @@ class BackApi implements Api {
       "status": "ok",
       "list": data,
     };
-  }
-
-  static final _logger = Logger();
-  static final Dio _dio = Dio(BaseOptions(
-    baseUrl: _baseUrl,
-  ));
-  BackApi._internal();
-  factory BackApi() {
-    return _instance;
   }
 
   /// General request method. Has retry parameter.

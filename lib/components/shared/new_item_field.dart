@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:todo_list/navigation/navigation_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -16,9 +16,16 @@ class NewItemField extends StatefulWidget {
 }
 
 class _NewItemFieldState extends State<NewItemField> {
+  late NavigationController _navController;
+
+  @override
+  void initState() {
+    super.initState();
+    _navController = GetIt.I<NavigationController>();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var navControllerProvider = context.read<NavigationController>();
     return Padding(
       padding: const EdgeInsets.only(left: 10, top: 16, bottom: 16, right: 16),
       child: Row(
@@ -31,7 +38,7 @@ class _NewItemFieldState extends State<NewItemField> {
             flex: 6,
             child: GestureDetector(
               onTap: () {
-                navControllerProvider.navigateToNewTodoScreen();
+                _navController.navigateToNewTodoScreen();
               },
               child: TextField(
                   controller: widget.controller,
