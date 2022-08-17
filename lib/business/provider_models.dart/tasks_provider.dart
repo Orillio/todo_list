@@ -31,7 +31,6 @@ class TasksProvider with ChangeNotifier {
         await _remoteRepository.refreshList(tasksList);
       }
       _localRepository.setRevision(remoteRevision);
-      localRevision = remoteRevision;
 
       _tasks = List.from(await _localRepository.getTodoList());
       return tasks!;
