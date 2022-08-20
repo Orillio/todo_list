@@ -34,19 +34,19 @@ class _TodoListItemState extends State<TodoListItem> {
     if (widget.model.importance == "basic") return const SizedBox.shrink();
     if (widget.model.importance == "important") {
       return SizedBox(
-        width: 16,
+        width: 27,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
-              width: 8,
+              width: 7,
               child: Icon(
                 Icons.priority_high_rounded,
                 color: _importanceColor,
               ),
             ),
             SizedBox(
-              width: 8,
+              width: 7,
               child: Icon(
                 Icons.priority_high_rounded,
                 color: _importanceColor,
@@ -57,8 +57,11 @@ class _TodoListItemState extends State<TodoListItem> {
       );
     } else {
       return const SizedBox(
-        width: 20,
-        child: Icon(Icons.arrow_downward_rounded),
+        width: 25,
+        height: 25,
+        child: Icon(
+          Icons.arrow_downward_rounded,
+        ),
       );
     }
   }
@@ -66,7 +69,8 @@ class _TodoListItemState extends State<TodoListItem> {
   ThemeData _checkboxTheme() {
     return darkTheme.copyWith(
       checkboxTheme: CheckboxThemeData(
-        checkColor: MaterialStateProperty.all(Theme.of(context).appBarTheme.backgroundColor),
+        checkColor: MaterialStateProperty.all(
+            Theme.of(context).appBarTheme.backgroundColor),
         fillColor: MaterialStateProperty.resolveWith(
           (states) {
             if (states.contains(MaterialState.selected)) {
@@ -119,66 +123,70 @@ class _TodoListItemState extends State<TodoListItem> {
         }
       },
       key: UniqueKey(),
-      child: Padding(
-        padding:
-            const EdgeInsets.only(left: 10, top: 16, bottom: 16, right: 16),
-        child: Consumer<TasksProvider>(builder: (context, todoProvider, _) {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 1,
-                child: SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: Theme(
-                    data: _checkboxTheme(),
-                    child: Checkbox(
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      value: widget.model.done,
-                      onChanged: (value) {
-                        model.updateItem(widget.model.changeFields(
-                          done: value,
-                          changedAt: DateTime.now(),
-                        ));
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 6,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      child: OrientationBuilder(
+        builder: (context, orientation) {
+          return Padding(
+            padding:
+                const EdgeInsets.only(left: 19, top: 16, bottom: 16, right: 16),
+            child: Consumer<TasksProvider>(
+              builder: (context, todoProvider, _) {
+                return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    if (widget.model.importance != "basic")
-                      Expanded(
-                        child: _importanceIcon(),
-                      ),
                     Expanded(
-                      flex: 8,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Row(
                         children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.6,
-                            child: Text(
-                              widget.model.text,
-                              style: widget.model.done
-                                  ? Theme.of(context)
-                                      .textTheme
-                                      .labelMedium!
-                                      .copyWith(
-                                          decoration:
-                                              TextDecoration.lineThrough)
-                                  : Theme.of(context).textTheme.titleMedium,
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
+                          Container(
+                            margin: widget.model.importance == "basic"
+                                ? const EdgeInsets.only(right: 15)
+                                : const EdgeInsets.only(right: 7),
+                            width: 20,
+                            height: 20,
+                            child: Theme(
+                              data: _checkboxTheme(),
+                              child: Checkbox(
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
+                                value: widget.model.done,
+                                onChanged: (value) {
+                                  model.updateItem(
+                                    widget.model.changeFields(
+                                      done: value,
+                                      changedAt: DateTime.now(),
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
-                          if (widget.model.deadline != null)
-                            SmallLabel(dateToString(widget.model.deadline!)),
+                          if (widget.model.importance != "basic")
+                            _importanceIcon(),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.6,
+                                child: Text(
+                                  widget.model.text,
+                                  style: widget.model.done
+                                      ? Theme.of(context)
+                                          .textTheme
+                                          .labelMedium!
+                                          .copyWith(
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                          )
+                                      : Theme.of(context).textTheme.titleMedium,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              if (widget.model.deadline != null)
+                                SmallLabel(
+                                    dateToString(widget.model.deadline!)),
+                            ],
+                          )
                         ],
                       ),
                     ),
@@ -188,13 +196,13 @@ class _TodoListItemState extends State<TodoListItem> {
                             .navigateToUpdateTodoModelScreen(widget.model);
                       },
                       child: const Icon(Icons.info_outline),
-                    ),
+                    )
                   ],
-                ),
-              ),
-            ],
+                );
+              },
+            ),
           );
-        }),
+        },
       ),
     );
   }

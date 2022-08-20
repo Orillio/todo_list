@@ -131,69 +131,77 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                   )
                 ],
               ),
-              body: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomTextField(
-                            controller: provider.controller,
-                          ),
-                          const ImportanceDropdown(),
-                          const SizedBox(height: 16),
-                          Divider(
-                            height: 30,
-                            color: Theme.of(context).iconTheme.color,
-                          ),
-                          const DatePicker(),
-                        ],
+              body: Padding(
+                padding:
+                    MediaQuery.of(context).orientation == Orientation.landscape
+                        ? const EdgeInsets.symmetric(horizontal: 45)
+                        : EdgeInsets.zero,
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomTextField(
+                              controller: provider.controller,
+                            ),
+                            const ImportanceDropdown(),
+                            const SizedBox(height: 16),
+                            Divider(
+                              height: 30,
+                              color: Theme.of(context).iconTheme.color,
+                            ),
+                            const DatePicker(),
+                          ],
+                        ),
                       ),
-                    ),
-                    Divider(
-                      height: 30,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
-                    if (widget.model != null)
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextButton(
-                              onPressed: () {
-                                _navController.navigateBack();
-                                todoProvider.deleteItem(widget.model!);
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  children: [
-                                    const Padding(
-                                      padding: EdgeInsets.only(right: 10),
-                                      child: Icon(
-                                        Icons.delete,
-                                        color: ConstDarkColors.colorRed,
+                      Divider(
+                        height: 30,
+                        color: Theme.of(context).iconTheme.color,
+                      ),
+                      if (widget.model != null)
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextButton(
+                                onPressed: () {
+                                  _navController.navigateBack();
+                                  todoProvider.deleteItem(widget.model!);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.only(right: 10),
+                                        child: Icon(
+                                          Icons.delete,
+                                          color: ConstDarkColors.colorRed,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      AppLocalizations.of(context)!.removeItem,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium
-                                          ?.copyWith(
-                                              color: ConstDarkColors.colorRed),
-                                    ),
-                                  ],
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .removeItem,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                                color:
+                                                    ConstDarkColors.colorRed),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    const SizedBox(height: 100)
-                  ],
+                          ],
+                        ),
+                      const SizedBox(height: 100)
+                    ],
+                  ),
                 ),
               ),
             ),

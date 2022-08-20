@@ -48,9 +48,9 @@ ThemeData darkTheme = ThemeData(
 ThemeData lightTheme = ThemeData(
   buttonTheme: const ButtonThemeData(buttonColor: ConstLightColors.colorBlue),
   scaffoldBackgroundColor: ConstLightColors.backPrimary,
-  brightness: Brightness.dark,
+  brightness: Brightness.light,
   colorScheme:
-      const ColorScheme.dark(secondary: ConstLightColors.backSecondary),
+      const ColorScheme.light(secondary: ConstLightColors.backSecondary),
   primaryColorDark: ConstLightColors.backPrimary,
   appBarTheme:
       const AppBarTheme(backgroundColor: ConstLightColors.backSecondary),

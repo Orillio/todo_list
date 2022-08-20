@@ -55,7 +55,6 @@ class TasksProvider with ChangeNotifier {
   Future deleteItem(TodoModel item) async {
     await _localRepository.deleteItem(item);
     _tasks?.remove(item);
-    notifyListeners();
 
     try {
       await _remoteRepository.deleteItem(item);

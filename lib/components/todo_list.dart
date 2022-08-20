@@ -30,14 +30,18 @@ class _TodoListState extends State<TodoList> {
       future: todoList,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            clipBehavior: Clip.antiAlias,
-            elevation: 3,
-            color: Theme.of(context).colorScheme.secondary,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
+          var isLandscape =
+              MediaQuery.of(context).orientation == Orientation.landscape;
+          return Padding(
+            padding: isLandscape
+                ? const EdgeInsets.symmetric(horizontal: 70)
+                : EdgeInsets.zero,
+            child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
+              clipBehavior: Clip.antiAlias,
+              elevation: 3,
+              color: Theme.of(context).colorScheme.secondary,
               child: Consumer<VisibilityChangeNotifier>(
                   builder: (context, visibilityProvider, _) {
                 context.select<TasksProvider, int>((value) {
