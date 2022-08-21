@@ -35,13 +35,11 @@ class FakeTodoProvider implements TasksRepository {
 
   @override
   Future deleteItem(TodoModel item) async {
-    await Future.delayed(const Duration(milliseconds: 200));
     _items.remove(item);
   }
 
   @override
   Future<List<TodoModel>> getTodoList() async {
-    await Future.delayed(const Duration(seconds: 2));
     return _items;
   }
 
@@ -53,7 +51,6 @@ class FakeTodoProvider implements TasksRepository {
 
   @override
   Future updateItem(TodoModel item) async {
-    await Future.delayed(const Duration(milliseconds: 150));
     var model = _items.where((i) => i.id == item.id).first;
     model = item;
     item = model;
