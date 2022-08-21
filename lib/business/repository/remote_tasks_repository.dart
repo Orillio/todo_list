@@ -5,11 +5,11 @@ import 'package:todo_list/models/todo_model.dart';
 import '../api/api.dart';
 
 class RemoteTasksRepository implements TasksRepository {
-
+  
   late Api _api;
 
-  RemoteTasksRepository() {
-    _api = GetIt.I<Api>();
+  RemoteTasksRepository({Api? api}) {
+    _api = api ?? GetIt.I<Api>();
   }
 
   @override
@@ -36,10 +36,9 @@ class RemoteTasksRepository implements TasksRepository {
   Future updateItem(TodoModel item) async {
     await _api.updateItem(item);
   }
-  
+
   @override
   Future<int> getRevision() async {
     return _api.getUpToDateRevision();
   }
-
 }

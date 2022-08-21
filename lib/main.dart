@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -19,42 +18,43 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'models/todo_model.dart';
 
+Future noZonedGuardedMain({bool testEnvironment = false}) async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  var remoteConfig = FirebaseRemoteConfig.instance;
+
+  await remoteConfig.setConfigSettings(RemoteConfigSettings(
+    fetchTimeout: const Duration(minutes: 1),
+    minimumFetchInterval: const Duration(seconds: 5),
+  ));
+
+  remoteConfig.setDefaults(
+      {"importanceColor": ConstDarkColors.colorRed.value.toString()});
+  try {
+    await remoteConfig.fetchAndActivate();
+  } catch (e) {
+    Logger().e("Couldn't fecth remote configs");
+  }
+
+  await Hive.initFlutter();
+  Hive.registerAdapter(TodoModelAdapter());
+  await Hive.openBox<TodoModel>("todoBox");
+  await Hive.openBox<int>("revision");
+
+  TodoAppServices.registerApi();
+  TodoAppServices.registerLocalTasksRepository();
+  TodoAppServices.registerRemoteTasksRepository();
+  TodoAppServices.registerNavigationController();
+
+  runApp(const MyApp());
+}
+
 void main() {
   runZonedGuarded<Future<void>>(
     () async {
-      WidgetsFlutterBinding.ensureInitialized();
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
-
-      var remoteConfig = FirebaseRemoteConfig.instance;
-
-      await remoteConfig.setConfigSettings(RemoteConfigSettings(
-        fetchTimeout: const Duration(minutes: 1),
-        minimumFetchInterval: const Duration(seconds: 5),
-      ));
-
-      remoteConfig.setDefaults(
-          {"importanceColor": ConstDarkColors.colorRed.value.toString()});
-      try {
-        await remoteConfig.fetchAndActivate();
-      } catch (e) {
-        Logger().e("Couldn't fecth remote configs");
-      }
-      FlutterError.onError =
-          FirebaseCrashlytics.instance.recordFlutterFatalError;
-
-      await Hive.initFlutter();
-      Hive.registerAdapter(TodoModelAdapter());
-      await Hive.openBox<TodoModel>("todoBox");
-      await Hive.openBox<int>("revision");
-
-      TodoAppServices.registerApi();
-      TodoAppServices.registerLocalTasksRepository();
-      TodoAppServices.registerRemoteTasksRepository();
-      TodoAppServices.registerNavigationController();
-
-      runApp(const MyApp());
+      noZonedGuardedMain();
     },
     (error, stack) =>
         FirebaseCrashlytics.instance.recordError(error, stack, fatal: true),
@@ -62,7 +62,9 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({this.isTestLocale = false, Key? key}) : super(key: key);
+
+  final bool isTestLocale;
 
   @override
   Widget build(BuildContext context) {
@@ -72,9 +74,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => TasksProvider()),
       ],
       child: MaterialApp(
-        supportedLocales: const [
-          Locale('en', 'US'),
-          Locale('ru'),
+        supportedLocales: [
+          if (!isTestLocale) const Locale('en'),
+          const Locale('ru'),
         ],
         localizationsDelegates: const [
           AppLocalizations.delegate,

@@ -26,6 +26,7 @@ class _DatePickerState extends State<DatePicker> {
             MediumTitle(AppLocalizations.of(context)!.deadline),
             if (model.deadlineString != null)
               Padding(
+                key: const ValueKey("deadline_date_switch"),
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
                   model.deadlineString!,
