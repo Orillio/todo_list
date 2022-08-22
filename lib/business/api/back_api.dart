@@ -81,7 +81,7 @@ class BackApi implements Api {
   }
 
   @override
-  Future addItem(TodoModel model) async {
+  Future<void> addItem(TodoModel model) async {
     var response = await request("/list/",
         method: "POST", data: fromItemTemplate(model.toMap()));
     _revision = _revision! + 1;
@@ -89,7 +89,7 @@ class BackApi implements Api {
   }
 
   @override
-  Future updateList(List<TodoModel> model) async {
+  Future<void> updateList(List<TodoModel> model) async {
     var response = await request("/list/",
         method: "PATCH",
         data: fromListTemplate(model.map((e) => e.toMap()).toList()));
@@ -98,7 +98,7 @@ class BackApi implements Api {
   }
 
   @override
-  Future deleteItem(String id) async {
+  Future<void> deleteItem(String id) async {
     await request(
       "/list/$id",
       method: "DELETE",
@@ -108,7 +108,7 @@ class BackApi implements Api {
   }
 
   @override
-  Future updateItem(TodoModel model) async {
+  Future<void> updateItem(TodoModel model) async {
     var response = await request("/list/${model.id}",
         method: "PUT", data: fromItemTemplate(model.toMap()));
     _revision = _revision! + 1;

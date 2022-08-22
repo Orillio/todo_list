@@ -29,12 +29,12 @@ class FakeTodoProvider implements TasksRepository {
   }
 
   @override
-  Future addItem(TodoModel item) async {
+  Future<void> addItem(TodoModel item) async {
     _items.add(item);
   }
 
   @override
-  Future deleteItem(TodoModel item) async {
+  Future<void> deleteItem(TodoModel item) async {
     _items.remove(item);
   }
 
@@ -44,13 +44,13 @@ class FakeTodoProvider implements TasksRepository {
   }
 
   @override
-  Future refreshList(List<TodoModel> list) async {
+  Future<void> refreshList(List<TodoModel> list) async {
     _items.clear();
     _items.addAll(list);
   }
 
   @override
-  Future updateItem(TodoModel item) async {
+  Future<void> updateItem(TodoModel item) async {
     var model = _items.where((i) => i.id == item.id).first;
     model = item;
     item = model;

@@ -13,12 +13,12 @@ class RemoteTasksRepository implements TasksRepository {
   }
 
   @override
-  Future addItem(TodoModel item) async {
+  Future<void> addItem(TodoModel item) async {
     await _api.addItem(item);
   }
 
   @override
-  Future deleteItem(TodoModel item) async {
+  Future<void> deleteItem(TodoModel item) async {
     await _api.deleteItem(item.id);
   }
 
@@ -28,12 +28,12 @@ class RemoteTasksRepository implements TasksRepository {
   }
 
   @override
-  Future refreshList(List<TodoModel> list) async {
+  Future<void> refreshList(List<TodoModel> list) async {
     await _api.updateList(list);
   }
 
   @override
-  Future updateItem(TodoModel item) async {
+  Future<void> updateItem(TodoModel item) async {
     await _api.updateItem(item);
   }
 

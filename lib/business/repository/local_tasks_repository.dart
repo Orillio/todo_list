@@ -16,13 +16,13 @@ class LocalTasksRepository implements TasksRepository {
   }
 
   @override
-  Future addItem(TodoModel item) async {
+  Future<void> addItem(TodoModel item) async {
     _todoBox.add(item);
     _revisionBox.put("revision", await getRevision() + 1);
   }
 
   @override
-  Future deleteItem(TodoModel item) async {
+  Future<void> deleteItem(TodoModel item) async {
     _todoBox.values.firstWhere((element) => element.id == item.id).delete();
     _revisionBox.put("revision", await getRevision() + 1);
   }
@@ -39,14 +39,14 @@ class LocalTasksRepository implements TasksRepository {
   }
 
   @override
-  Future refreshList(List<TodoModel> list) async {
+  Future<void> refreshList(List<TodoModel> list) async {
     await _todoBox.clear();
     await _todoBox.addAll(list);
     await _revisionBox.put("revision", await getRevision() + 1);
   }
 
   @override
-  Future updateItem(TodoModel item) async {
+  Future<void> updateItem(TodoModel item) async {
     var model = _todoBox.values.firstWhere((element) => element.id == item.id);
 
     model.pasteFromOther(item).save();
