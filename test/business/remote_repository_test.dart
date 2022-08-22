@@ -1,7 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:todo_list/business/api/api.dart';
-import 'package:mockito/annotations.dart';
 import 'package:todo_list/business/api/back_api.dart';
 import 'package:todo_list/business/repository/remote_tasks_repository.dart';
 import 'package:todo_list/models/todo_model.dart';
