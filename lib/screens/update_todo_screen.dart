@@ -171,7 +171,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                               child: TextButton(
                                 onPressed: () {
                                   _routerController.gotoTodoList();
-                                  todoProvider.deleteItem(widget.model!);
+                                  todoProvider.deleteItem(widget.model!, needRebuild: true);
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),

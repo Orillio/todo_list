@@ -70,16 +70,19 @@ class _ImportanceDropdownState extends State<ImportanceDropdown> {
               AppLocalizations.of(context)!.importanceLow,
               AppLocalizations.of(context)!.importanceBasic,
               AppLocalizations.of(context)!.importanceHigh,
-            ].map((value) {
-              return DropdownMenuItem(
-                value: value,
-                child: Text(
-                  value,
-                  style: TextStyle(
-                      color: Theme.of(context).textTheme.titleLarge!.color),
-                ),
-              );
-            }).toList(),
+            ].map(
+              (value) {
+                return DropdownMenuItem(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.titleLarge!.color,
+                    ),
+                  ),
+                );
+              },
+            ).toList(),
           ),
         ),
       ],

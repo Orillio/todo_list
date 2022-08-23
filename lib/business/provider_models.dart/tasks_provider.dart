@@ -52,7 +52,7 @@ class TasksProvider with ChangeNotifier {
     }
   }
 
-  Future deleteItem(TodoModel item) async {
+  Future deleteItem(TodoModel item, {bool needRebuild = false}) async {
     await _localRepository.deleteItem(item);
     _tasks?.remove(item);
 
@@ -61,6 +61,7 @@ class TasksProvider with ChangeNotifier {
     } catch (e) {
       Logger().e("Failed to delete item on server");
     }
+    if (needRebuild) notifyListeners();
   }
 
   Future updateItem(TodoModel item) async {
