@@ -51,7 +51,7 @@ class GoRouterController {
     try {
       goBack();
     } catch (e) {
-      goRouter.go("/");
+      goRouter.push("/");
     }
   }
 
