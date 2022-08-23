@@ -5,7 +5,6 @@ import 'package:todo_list/models/todo_model.dart';
 import '../api/api.dart';
 
 class RemoteTasksRepository implements TasksRepository {
-  
   late Api _api;
 
   RemoteTasksRepository({Api? api}) {

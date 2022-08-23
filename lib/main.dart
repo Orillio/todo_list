@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:todo_list/business/di/todo_app_services.dart';
 import 'package:todo_list/business/provider_models.dart/tasks_provider.dart';
 import 'package:todo_list/navigation/navigation_controller.dart';
-import 'package:todo_list/screens/todo_screen.dart';
 import 'package:todo_list/themes/dark_theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import './firebase_options.dart';
@@ -47,7 +46,7 @@ Future noZonedGuardedMain({bool testEnvironment = false}) async {
   TodoAppServices.registerApi();
   TodoAppServices.registerLocalTasksRepository();
   TodoAppServices.registerRemoteTasksRepository();
-  TodoAppServices.registerNavigationController();
+  TodoAppServices.registerGoRouterController();
 
   runApp(const MyApp());
 }
@@ -69,12 +68,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var routerController = GetIt.I<GoRouterController>();
+
     //Wrapping MaterialApp in MultiProvider to access models in all routes.
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => TasksProvider()),
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
+        routerDelegate: routerController.goRouter.routerDelegate,
+        routeInformationParser:
+            routerController.goRouter.routeInformationParser,
+        routeInformationProvider:
+            routerController.goRouter.routeInformationProvider,
         supportedLocales: [
           if (!isTestLocale) const Locale('en'),
           const Locale('ru'),
@@ -85,13 +91,11 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        navigatorKey: GetIt.I<NavigationController>().key,
         debugShowCheckedModeBanner: false,
         title: 'TodoList',
         themeMode: ThemeMode.system,
         darkTheme: darkTheme,
         theme: lightTheme,
-        home: const TodoScreen(),
       ),
     );
   }

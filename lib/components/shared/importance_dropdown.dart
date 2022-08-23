@@ -73,7 +73,11 @@ class _ImportanceDropdownState extends State<ImportanceDropdown> {
             ].map((value) {
               return DropdownMenuItem(
                 value: value,
-                child: Text(value),
+                child: Text(
+                  value,
+                  style: TextStyle(
+                      color: Theme.of(context).textTheme.titleLarge!.color),
+                ),
               );
             }).toList(),
           ),

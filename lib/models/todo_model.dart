@@ -1,8 +1,6 @@
-
 import 'package:hive/hive.dart';
 
 part 'todo_model.g.dart';
-
 
 @HiveType(typeId: 0)
 class TodoModel extends HiveObject {

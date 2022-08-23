@@ -57,20 +57,22 @@ class TodoFormProvider extends ChangeNotifier {
 
 class UpdateTodoScreen extends StatefulWidget {
   final TodoModel? model;
+  final String? modelId;
 
-  const UpdateTodoScreen({this.model, Key? key}) : super(key: key);
+  const UpdateTodoScreen({this.model, this.modelId, Key? key})
+      : super(key: key);
 
   @override
   State<UpdateTodoScreen> createState() => _UpdateTodoScreenState();
 }
 
 class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
-  late NavigationController _navController;
+  late GoRouterController _routerController;
 
   @override
   void initState() {
     super.initState();
-    _navController = GetIt.I<NavigationController>();
+    _routerController = GetIt.I<GoRouterController>();
   }
 
   @override
@@ -92,7 +94,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                 elevation: 0,
                 backgroundColor: Colors.transparent,
                 leading: GestureDetector(
-                  onTap: () => _navController.navigateBack(),
+                  onTap: () => _routerController.gotoTodoList(),
                   child: Icon(
                     Icons.close,
                     color: Theme.of(context).textTheme.titleMedium!.color,
@@ -124,7 +126,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                             ..importance = provider.importance
                             ..changedAt = DateTime.now());
                         }
-                        _navController.navigateBack();
+                        _routerController.gotoTodoList();
                       },
                       text: AppLocalizations.of(context)!.save,
                     ),
@@ -168,7 +170,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                             Expanded(
                               child: TextButton(
                                 onPressed: () {
-                                  _navController.navigateBack();
+                                  _routerController.gotoTodoList();
                                   todoProvider.deleteItem(widget.model!);
                                 },
                                 child: Padding(

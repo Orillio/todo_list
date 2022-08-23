@@ -29,7 +29,8 @@ void main() {
   });
   test("delete item", () async {
     await repository.deleteItem(testItem);
-    var result = (await repository.getTodoList()).any((e) => e.id == testItem.id);
+    var result =
+        (await repository.getTodoList()).any((e) => e.id == testItem.id);
     expect(result, false);
   });
 }

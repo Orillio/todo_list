@@ -16,12 +16,12 @@ class NewItemField extends StatefulWidget {
 }
 
 class _NewItemFieldState extends State<NewItemField> {
-  late NavigationController _navController;
+  late GoRouterController _navController;
 
   @override
   void initState() {
     super.initState();
-    _navController = GetIt.I<NavigationController>();
+    _navController = GetIt.I<GoRouterController>();
   }
 
   @override
@@ -35,7 +35,7 @@ class _NewItemFieldState extends State<NewItemField> {
               padding: const EdgeInsets.only(left: 45),
               child: GestureDetector(
                 onTap: () {
-                  _navController.navigateToNewTodoScreen();
+                  _navController.gotoCreateTodoScreen();
                 },
                 child: TextField(
                     controller: widget.controller,

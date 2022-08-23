@@ -12,13 +12,16 @@ class TodoAppServices {
   static void registerLocalTasksRepository() {
     _getIt.registerSingleton<LocalTasksRepository>(LocalTasksRepository());
   }
+
   static void registerRemoteTasksRepository() {
     _getIt.registerSingleton<RemoteTasksRepository>(RemoteTasksRepository());
   }
+
   static void registerApi() {
     _getIt.registerSingleton<Api>(BackApi());
   }
-  static void registerNavigationController() {
-    _getIt.registerSingleton<NavigationController>(NavigationController());
+
+  static void registerGoRouterController() {
+    _getIt.registerSingleton<GoRouterController>(GoRouterController());
   }
 }

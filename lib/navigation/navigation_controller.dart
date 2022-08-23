@@ -1,16 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:todo_list/models/todo_model.dart';
+import 'package:todo_list/screens/todo_screen.dart';
 import 'package:todo_list/screens/update_todo_screen.dart';
 
-class NavigationController {
-  final GlobalKey<NavigatorState> _key = GlobalKey();
-  GlobalKey<NavigatorState> get key => _key;
+class GoRouterController {
+  late final GoRouter goRouter;
 
-  void navigateBack() {
-    _key.currentState?.pop();
+  GoRouterController() {
+    goRouter = GoRouter(routes: [
+      GoRoute(
+        path: "/",
+        name: "list",
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: const TodoScreen(),
+          transitionsBuilder: _slideTransitionBuilder,
+        ),
+      ),
+      GoRoute(
+        path: "/create",
+        name: "create",
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: const UpdateTodoScreen(),
+          transitionsBuilder: _slideTransitionBuilder,
+        ),
+      ),
+      GoRoute(
+        path: "/:id",
+        name: "specific todo",
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: UpdateTodoScreen(
+            model: state.extra is TodoModel ? state.extra as TodoModel : null,
+            modelId: state.params['id'],
+          ),
+          transitionsBuilder: _slideTransitionBuilder,
+        ),
+      ),
+    ]);
   }
 
-  Widget slideTransitionBuilder(BuildContext context, Animation animation,
+  void gotoUpdateTodoScreen(TodoModel parameter) {
+    goRouter.push("/${parameter.id}", extra: parameter);
+  }
+
+  void gotoCreateTodoScreen() {
+    goRouter.push("/create");
+  }
+
+  void gotoTodoList() {
+    try {
+      goBack();
+    } catch (e) {
+      goRouter.go("/");
+    }
+  }
+
+  void goBack() {
+    goRouter.pop();
+  }
+
+  Widget _slideTransitionBuilder(BuildContext context, Animation animation,
       Animation secAnimation, Widget child) {
     const begin = Offset(1.0, 0.0);
     const end = Offset.zero;
@@ -22,17 +71,5 @@ class NavigationController {
       position: animation.drive(tween),
       child: child,
     );
-  }
-
-  void navigateToNewTodoScreen() {
-    _key.currentState?.push(PageRouteBuilder(
-        pageBuilder: (_, __, ___) => const UpdateTodoScreen(),
-        transitionsBuilder: slideTransitionBuilder));
-  }
-
-  void navigateToUpdateTodoModelScreen(TodoModel model) {
-    _key.currentState?.push(PageRouteBuilder(
-        pageBuilder: (_, __, ___) => UpdateTodoScreen(model: model),
-        transitionsBuilder: slideTransitionBuilder));
   }
 }
