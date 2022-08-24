@@ -1,0 +1,145 @@
+import 'package:flutter/material.dart';
+
+main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Router(
+        routerDelegate: MyRouterDelegate(),
+      ),
+    );
+  }
+}
+
+class MyRouterDelegate extends RouterDelegate
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin {
+  int selectedIndex = 0;
+  @override
+  final GlobalKey<NavigatorState> navigatorKey;
+
+  MyRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Navigator(
+      key: navigatorKey,
+      observers: [
+        HeroController()
+      ], // Important to ensure that hero animations are displayed
+      pages: [
+        if (selectedIndex == 0)
+          SlidingPage(
+            key: ValueKey("wdw"),
+            child: ex1(
+              c: () {
+                onNewIndexSelected(1);
+              },
+            ),
+          ),
+        if (selectedIndex == 1)
+          SlidingPage(
+            key: ValueKey("wdwdw"),
+            child: ex2(
+              c: () {
+                onNewIndexSelected(0);
+              },
+            ),
+          ),
+      ],
+      onPopPage: (route, result) {
+        return false;
+      },
+    );
+  }
+
+  // We don't use named navigation so we don't use this
+  @override
+  Future<void> setNewRoutePath(configuration) async => {};
+
+  void onNewIndexSelected(int value) {
+    selectedIndex = value;
+    notifyListeners();
+  }
+}
+
+class ex1 extends StatelessWidget {
+  final VoidCallback c;
+
+  const ex1({Key? key, required this.c}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          Center(child: Text("1")),
+          Center(
+            child: TextButton(
+              onPressed: c,
+              child: Text("wddefefew"),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class ex2 extends StatelessWidget {
+  final VoidCallback c;
+
+  const ex2({Key? key, required this.c}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          Center(child: Text("2")),
+          Center(
+            child: TextButton(
+              onPressed: c,
+              child: Text("wddwdwdw"),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+
+class SlidingPage extends Page {
+  final Widget child;
+
+  const SlidingPage({required this.child, LocalKey? key}) : super(key: key);
+
+  @override
+  Route createRoute(BuildContext context) {
+    return PageRouteBuilder(
+      settings: this,
+      transitionsBuilder: (context, animation, secondaryAnimation, c) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: c,
+        );
+      },
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return child;
+      },
+    );
+  }
+}

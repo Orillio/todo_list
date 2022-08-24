@@ -67,7 +67,7 @@ class TodoModel extends HiveObject {
     return this;
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     var data = <String, dynamic>{
       "id": id,
       "text": text,
@@ -84,7 +84,7 @@ class TodoModel extends HiveObject {
     return data;
   }
 
-  TodoModel.fromMap(Map<String, dynamic> map) {
+  TodoModel.fromJson(Map<String, dynamic> map) {
     id = map["id"];
     text = map["text"];
     done = map["done"];

@@ -16,12 +16,12 @@ class NewItemField extends StatefulWidget {
 }
 
 class _NewItemFieldState extends State<NewItemField> {
-  late GoRouterController _navController;
+  late NavigationController _navController;
 
   @override
   void initState() {
     super.initState();
-    _navController = GetIt.I<GoRouterController>();
+    _navController = GetIt.I<NavigationController>();
   }
 
   @override

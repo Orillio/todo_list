@@ -22,6 +22,6 @@ class TodoAppServices {
   }
 
   static void registerGoRouterController() {
-    _getIt.registerSingleton<GoRouterController>(GoRouterController());
+    _getIt.registerSingleton<NavigationController>(NavigationController());
   }
 }

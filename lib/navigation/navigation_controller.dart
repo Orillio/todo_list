@@ -1,75 +1,161 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:todo_list/models/todo_model.dart';
+import 'package:todo_list/navigation/animations/sliding_backward_page.dart';
 import 'package:todo_list/screens/todo_screen.dart';
 import 'package:todo_list/screens/update_todo_screen.dart';
 
-class GoRouterController {
-  late final GoRouter goRouter;
+import 'animations/scale_page.dart';
 
-  GoRouterController() {
-    goRouter = GoRouter(routes: [
-      GoRoute(
-        path: "/",
-        name: "list",
-        pageBuilder: (context, state) => CustomTransitionPage(
-          child: const TodoScreen(),
-          transitionsBuilder: _slideTransitionBuilder,
-        ),
-      ),
-      GoRoute(
-        path: "/create",
-        name: "create",
-        pageBuilder: (context, state) => CustomTransitionPage(
-          child: const UpdateTodoScreen(),
-          transitionsBuilder: _slideTransitionBuilder,
-        ),
-      ),
-      GoRoute(
-        path: "/:id",
-        name: "specific todo",
-        pageBuilder: (context, state) => CustomTransitionPage(
-          child: UpdateTodoScreen(
-            model: state.extra is TodoModel ? state.extra as TodoModel : null,
-            modelId: state.params['id'],
-          ),
-          transitionsBuilder: _slideTransitionBuilder,
-        ),
-      ),
-    ]);
-  }
+class ApplicationConfiguration {
+  final bool _isTodoList;
+  TodoModel? _todoModel;
 
-  void gotoUpdateTodoScreen(TodoModel parameter) {
-    goRouter.push("/${parameter.id}", extra: parameter);
-  }
+  bool get isTodoList => _isTodoList;
+  bool get isCreatePage => !_isTodoList && _todoModel == null;
+  bool get isTodoPage => !_isTodoList && _todoModel != null;
 
-  void gotoCreateTodoScreen() {
-    goRouter.push("/create");
-  }
+  ApplicationConfiguration(this._isTodoList, this._todoModel);
 
-  void gotoTodoList() {
-    try {
-      goBack();
-    } catch (e) {
-      goRouter.push("/");
+  ApplicationConfiguration.todoList() : _isTodoList = true;
+  ApplicationConfiguration.create() : _isTodoList = false;
+  ApplicationConfiguration.page(TodoModel model)
+      : _isTodoList = false,
+        _todoModel = model;
+}
+
+class TodoRouterInformationParser
+    extends RouteInformationParser<ApplicationConfiguration> {
+  @override
+  Future<ApplicationConfiguration> parseRouteInformation(
+      RouteInformation routeInformation) {
+    if (routeInformation.location == null) {
+      return SynchronousFuture(ApplicationConfiguration.todoList());
+    }
+    final uri = Uri.parse(routeInformation.location!);
+    if (uri.pathSegments.isEmpty) {
+      return SynchronousFuture(ApplicationConfiguration.todoList());
+    }
+    switch (uri.pathSegments[0]) {
+      case "create":
+        return SynchronousFuture(ApplicationConfiguration.create());
+      default:
+        return SynchronousFuture(
+          ApplicationConfiguration.todoList(),
+        );
     }
   }
 
-  void goBack() {
-    goRouter.pop();
+  @override
+  RouteInformation? restoreRouteInformation(
+      ApplicationConfiguration configuration) {
+    if (configuration.isTodoList) {
+      return const RouteInformation(location: "/");
+    }
+    if (configuration.isCreatePage) {
+      return const RouteInformation(location: "/create");
+    }
+    if (configuration.isTodoPage) {
+      return RouteInformation(
+        location: "/${configuration._todoModel?.id ?? ""}",
+        state: configuration._todoModel as Object,
+      );
+    }
+    return const RouteInformation(location: "/");
   }
+}
 
-  Widget _slideTransitionBuilder(BuildContext context, Animation animation,
-      Animation secAnimation, Widget child) {
-    const begin = Offset(1.0, 0.0);
-    const end = Offset.zero;
-    const curve = Curves.ease;
+class TodoRouterDelegate extends RouterDelegate<ApplicationConfiguration>
+    with
+        ChangeNotifier,
+        PopNavigatorRouterDelegateMixin<ApplicationConfiguration> {
+  bool _isTodoList;
+  TodoModel? _todoModel;
 
-    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+  TodoRouterDelegate(this._isTodoList, this._todoModel);
 
-    return SlideTransition(
-      position: animation.drive(tween),
-      child: child,
+  bool get isTodoList => _isTodoList;
+  bool get isCreatePage => !_isTodoList && _todoModel == null;
+  bool get isTodoPage => !_isTodoList && _todoModel != null;
+
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey();
+
+  @override
+  GlobalKey<NavigatorState>? get navigatorKey => _navigatorKey;
+
+  List<Page> get _pages => [
+        if (isTodoList)
+          const ScalePage(
+            key: ValueKey("1"),
+            child: TodoScreen(),
+          ),
+        if (isCreatePage)
+          const SlidingForwardPage(
+            key: ValueKey("2"),
+            child: UpdateTodoScreen(),
+          ),
+        if (isTodoPage)
+          SlidingForwardPage(
+            key: const ValueKey("3"),
+            child: UpdateTodoScreen(
+              model: _todoModel!,
+            ),
+          ),
+      ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Navigator(
+      key: navigatorKey,
+      observers: [HeroController()],
+      onPopPage: (route, result) => false,
+      pages: _pages,
     );
   }
+
+  @override
+  ApplicationConfiguration? get currentConfiguration =>
+      ApplicationConfiguration(_isTodoList, _todoModel);
+
+  @override
+  Future<void> setNewRoutePath(ApplicationConfiguration configuration) {
+    _isTodoList = configuration._isTodoList;
+    _todoModel = configuration._todoModel;
+    return Future.value();
+  }
+
+  void gotoUpdateTodoScreen(TodoModel parameter) {
+    _isTodoList = false;
+    _todoModel = parameter;
+    notifyListeners();
+  }
+
+  void gotoCreateTodoScreen() {
+    _isTodoList = false;
+    _todoModel = null;
+    notifyListeners();
+  }
+
+  void gotoTodoList() {
+    _isTodoList = true;
+    _todoModel = null;
+    notifyListeners();
+  }
+}
+
+class NavigationController {
+  late final TodoRouterDelegate delegate;
+  late final TodoRouterInformationParser parser;
+
+  NavigationController() {
+    delegate = TodoRouterDelegate(true, null);
+    parser = TodoRouterInformationParser();
+  }
+
+  void gotoUpdateTodoScreen(TodoModel parameter) =>
+      delegate.gotoUpdateTodoScreen(parameter);
+
+  void gotoCreateTodoScreen() => delegate.gotoCreateTodoScreen();
+
+  void gotoTodoList() => delegate.gotoTodoList();
 }

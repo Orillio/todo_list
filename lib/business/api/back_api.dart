@@ -83,7 +83,7 @@ class BackApi implements Api {
   @override
   Future<void> addItem(TodoModel model) async {
     var response = await request("/list/",
-        method: "POST", data: fromItemTemplate(model.toMap()));
+        method: "POST", data: fromItemTemplate(model.toJson()));
     _revision = _revision! + 1;
     _logger.i("Following item has been added:\n${response.data}");
   }
@@ -92,7 +92,7 @@ class BackApi implements Api {
   Future<void> updateList(List<TodoModel> model) async {
     var response = await request("/list/",
         method: "PATCH",
-        data: fromListTemplate(model.map((e) => e.toMap()).toList()));
+        data: fromListTemplate(model.map((e) => e.toJson()).toList()));
     _revision = _revision! + 1;
     _logger.i("Following list has been merged:\n${response.data}");
   }
@@ -110,7 +110,7 @@ class BackApi implements Api {
   @override
   Future<void> updateItem(TodoModel model) async {
     var response = await request("/list/${model.id}",
-        method: "PUT", data: fromItemTemplate(model.toMap()));
+        method: "PUT", data: fromItemTemplate(model.toJson()));
     _revision = _revision! + 1;
     _logger.i("Following item has been updated:\n${response.data}");
   }
@@ -119,7 +119,7 @@ class BackApi implements Api {
   Future<List<TodoModel>> getTasksList() async {
     var response = await request("/list/", method: "GET");
     return (response.data['list'] as List)
-        .map((e) => TodoModel.fromMap(e))
+        .map((e) => TodoModel.fromJson(e))
         .toList();
   }
 }

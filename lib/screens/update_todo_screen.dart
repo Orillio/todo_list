@@ -57,22 +57,20 @@ class TodoFormProvider extends ChangeNotifier {
 
 class UpdateTodoScreen extends StatefulWidget {
   final TodoModel? model;
-  final String? modelId;
 
-  const UpdateTodoScreen({this.model, this.modelId, Key? key})
-      : super(key: key);
+  const UpdateTodoScreen({this.model, Key? key}) : super(key: key);
 
   @override
   State<UpdateTodoScreen> createState() => _UpdateTodoScreenState();
 }
 
 class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
-  late GoRouterController _routerController;
+  late NavigationController _routerController;
 
   @override
   void initState() {
     super.initState();
-    _routerController = GetIt.I<GoRouterController>();
+    _routerController = GetIt.I<NavigationController>();
   }
 
   @override
@@ -171,7 +169,8 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                               child: TextButton(
                                 onPressed: () {
                                   _routerController.gotoTodoList();
-                                  todoProvider.deleteItem(widget.model!, needRebuild: true);
+                                  todoProvider.deleteItem(widget.model!,
+                                      needRebuild: true);
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),

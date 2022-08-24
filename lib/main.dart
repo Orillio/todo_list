@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var routerController = GetIt.I<GoRouterController>();
+    var navigationController = GetIt.I<NavigationController>();
 
     //Wrapping MaterialApp in MultiProvider to access models in all routes.
     return MultiProvider(
@@ -76,11 +76,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => TasksProvider()),
       ],
       child: MaterialApp.router(
-        routerDelegate: routerController.goRouter.routerDelegate,
-        routeInformationParser:
-            routerController.goRouter.routeInformationParser,
-        routeInformationProvider:
-            routerController.goRouter.routeInformationProvider,
+        routerDelegate: navigationController.delegate,
+        routeInformationParser: navigationController.parser,
         supportedLocales: [
           if (!isTestLocale) const Locale('en'),
           const Locale('ru'),

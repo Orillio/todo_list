@@ -192,7 +192,7 @@ class _TodoListItemState extends State<TodoListItem> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        GetIt.I<GoRouterController>()
+                        GetIt.I<NavigationController>()
                             .gotoUpdateTodoScreen(widget.model);
                       },
                       child: const Icon(Icons.info_outline),

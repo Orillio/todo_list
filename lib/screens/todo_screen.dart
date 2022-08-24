@@ -34,7 +34,7 @@ class _TodoScreenState extends State<TodoScreen> {
           color: Colors.white,
         ),
         onPressed: () {
-          GetIt.I<GoRouterController>().gotoCreateTodoScreen();
+          GetIt.I<NavigationController>().gotoCreateTodoScreen();
         },
       ),
       body: GestureDetector(
