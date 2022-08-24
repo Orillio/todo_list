@@ -84,11 +84,10 @@ class TodoRouterDelegate extends RouterDelegate<ApplicationConfiguration>
   GlobalKey<NavigatorState>? get navigatorKey => _navigatorKey;
 
   List<Page> get _pages => [
-        if (isTodoList)
-          const ScalePage(
-            key: ValueKey("1"),
-            child: TodoScreen(),
-          ),
+        const ScalePage(
+          key: ValueKey("1"),
+          child: TodoScreen(),
+        ),
         if (isCreatePage)
           const SlidingForwardPage(
             key: ValueKey("2"),
@@ -108,7 +107,9 @@ class TodoRouterDelegate extends RouterDelegate<ApplicationConfiguration>
     return Navigator(
       key: navigatorKey,
       observers: [HeroController()],
-      onPopPage: (route, result) => false,
+      onPopPage: (route, result) {
+        return route.didPop(result);
+      },
       pages: _pages,
     );
   }
@@ -136,7 +137,8 @@ class TodoRouterDelegate extends RouterDelegate<ApplicationConfiguration>
     notifyListeners();
   }
 
-  void gotoTodoList() {
+  void gotoTodoList() async {
+    await popRoute();
     _isTodoList = true;
     _todoModel = null;
     notifyListeners();
