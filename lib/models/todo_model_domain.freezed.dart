@@ -24,6 +24,7 @@ mixin _$TodoModelDomain {
   DateTime? get deadline => throw _privateConstructorUsedError;
   DateTime get changedAt => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
+  String get lastUpdatedBy => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TodoModelDomainCopyWith<TodoModelDomain> get copyWith =>
@@ -43,7 +44,8 @@ abstract class $TodoModelDomainCopyWith<$Res> {
       bool done,
       DateTime? deadline,
       DateTime changedAt,
-      DateTime createdAt});
+      DateTime createdAt,
+      String lastUpdatedBy});
 }
 
 /// @nodoc
@@ -65,6 +67,7 @@ class _$TodoModelDomainCopyWithImpl<$Res>
     Object? deadline = freezed,
     Object? changedAt = freezed,
     Object? createdAt = freezed,
+    Object? lastUpdatedBy = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -99,6 +102,10 @@ class _$TodoModelDomainCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      lastUpdatedBy: lastUpdatedBy == freezed
+          ? _value.lastUpdatedBy
+          : lastUpdatedBy // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -118,7 +125,8 @@ abstract class _$$_TodoModelDomainCopyWith<$Res>
       bool done,
       DateTime? deadline,
       DateTime changedAt,
-      DateTime createdAt});
+      DateTime createdAt,
+      String lastUpdatedBy});
 }
 
 /// @nodoc
@@ -142,6 +150,7 @@ class __$$_TodoModelDomainCopyWithImpl<$Res>
     Object? deadline = freezed,
     Object? changedAt = freezed,
     Object? createdAt = freezed,
+    Object? lastUpdatedBy = freezed,
   }) {
     return _then(_$_TodoModelDomain(
       id: id == freezed
@@ -176,6 +185,10 @@ class __$$_TodoModelDomainCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      lastUpdatedBy: lastUpdatedBy == freezed
+          ? _value.lastUpdatedBy
+          : lastUpdatedBy // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -191,7 +204,8 @@ class _$_TodoModelDomain implements _TodoModelDomain {
       required this.done,
       required this.deadline,
       required this.changedAt,
-      required this.createdAt});
+      required this.createdAt,
+      required this.lastUpdatedBy});
 
   @override
   final String id;
@@ -209,10 +223,12 @@ class _$_TodoModelDomain implements _TodoModelDomain {
   final DateTime changedAt;
   @override
   final DateTime createdAt;
+  @override
+  final String lastUpdatedBy;
 
   @override
   String toString() {
-    return 'TodoModelDomain(id: $id, text: $text, color: $color, importance: $importance, done: $done, deadline: $deadline, changedAt: $changedAt, createdAt: $createdAt)';
+    return 'TodoModelDomain(id: $id, text: $text, color: $color, importance: $importance, done: $done, deadline: $deadline, changedAt: $changedAt, createdAt: $createdAt, lastUpdatedBy: $lastUpdatedBy)';
   }
 
   @override
@@ -228,7 +244,9 @@ class _$_TodoModelDomain implements _TodoModelDomain {
             const DeepCollectionEquality().equals(other.done, done) &&
             const DeepCollectionEquality().equals(other.deadline, deadline) &&
             const DeepCollectionEquality().equals(other.changedAt, changedAt) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt));
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality()
+                .equals(other.lastUpdatedBy, lastUpdatedBy));
   }
 
   @override
@@ -241,7 +259,8 @@ class _$_TodoModelDomain implements _TodoModelDomain {
       const DeepCollectionEquality().hash(done),
       const DeepCollectionEquality().hash(deadline),
       const DeepCollectionEquality().hash(changedAt),
-      const DeepCollectionEquality().hash(createdAt));
+      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(lastUpdatedBy));
 
   @JsonKey(ignore: true)
   @override
@@ -258,7 +277,8 @@ abstract class _TodoModelDomain implements TodoModelDomain {
       required final bool done,
       required final DateTime? deadline,
       required final DateTime changedAt,
-      required final DateTime createdAt}) = _$_TodoModelDomain;
+      required final DateTime createdAt,
+      required final String lastUpdatedBy}) = _$_TodoModelDomain;
 
   @override
   String get id;
@@ -276,6 +296,8 @@ abstract class _TodoModelDomain implements TodoModelDomain {
   DateTime get changedAt;
   @override
   DateTime get createdAt;
+  @override
+  String get lastUpdatedBy;
   @override
   @JsonKey(ignore: true)
   _$$_TodoModelDomainCopyWith<_$_TodoModelDomain> get copyWith =>

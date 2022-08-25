@@ -5,12 +5,12 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/business/provider_models.dart/tasks_provider.dart';
 import 'package:todo_list/components/shared/small_label.dart';
-import 'package:todo_list/models/todo_model.dart';
+import 'package:todo_list/models/todo_model_domain.dart';
 import 'package:todo_list/navigation/navigation_controller.dart';
 import 'package:todo_list/themes/dark_theme.dart';
 
 class TodoListItem extends StatefulWidget {
-  final TodoModel model;
+  final TodoModelDomain model;
 
   const TodoListItem({required this.model, Key? key}) : super(key: key);
 
@@ -115,7 +115,11 @@ class _TodoListItemState extends State<TodoListItem> {
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.startToEnd) {
           model.updateItem(
-              widget.model.changeFields(done: true, changedAt: DateTime.now()));
+            widget.model.copyWith(
+              done: true,
+              changedAt: DateTime.now(),
+            ),
+          );
           return false;
         } else {
           model.deleteItem(widget.model);
@@ -128,78 +132,71 @@ class _TodoListItemState extends State<TodoListItem> {
           return Padding(
             padding:
                 const EdgeInsets.only(left: 19, top: 16, bottom: 16, right: 16),
-            child: Consumer<TasksProvider>(
-              builder: (context, todoProvider, _) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Row(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: widget.model.importance == "basic"
+                            ? const EdgeInsets.only(right: 15)
+                            : const EdgeInsets.only(right: 7),
+                        width: 20,
+                        height: 20,
+                        child: Theme(
+                          data: _checkboxTheme(),
+                          child: Checkbox(
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                            value: widget.model.done,
+                            onChanged: (value) {
+                              model.updateItem(
+                                widget.model.copyWith(
+                                  done: value ?? false,
+                                  changedAt: DateTime.now(),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      if (widget.model.importance != "basic") _importanceIcon(),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            margin: widget.model.importance == "basic"
-                                ? const EdgeInsets.only(right: 15)
-                                : const EdgeInsets.only(right: 7),
-                            width: 20,
-                            height: 20,
-                            child: Theme(
-                              data: _checkboxTheme(),
-                              child: Checkbox(
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                                value: widget.model.done,
-                                onChanged: (value) {
-                                  model.updateItem(
-                                    widget.model.changeFields(
-                                      done: value,
-                                      changedAt: DateTime.now(),
-                                    ),
-                                  );
-                                },
-                              ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            child: Text(
+                              widget.model.text,
+                              style: widget.model.done
+                                  ? Theme.of(context)
+                                      .textTheme
+                                      .labelMedium!
+                                      .copyWith(
+                                        decoration: TextDecoration.lineThrough,
+                                      )
+                                  : Theme.of(context).textTheme.titleMedium,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          if (widget.model.importance != "basic")
-                            _importanceIcon(),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.6,
-                                child: Text(
-                                  widget.model.text,
-                                  style: widget.model.done
-                                      ? Theme.of(context)
-                                          .textTheme
-                                          .labelMedium!
-                                          .copyWith(
-                                            decoration:
-                                                TextDecoration.lineThrough,
-                                          )
-                                      : Theme.of(context).textTheme.titleMedium,
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              if (widget.model.deadline != null)
-                                SmallLabel(
-                                    dateToString(widget.model.deadline!)),
-                            ],
-                          )
+                          if (widget.model.deadline != null)
+                            SmallLabel(dateToString(widget.model.deadline!)),
                         ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        GetIt.I<NavigationController>()
-                            .gotoUpdateTodoScreen(widget.model);
-                      },
-                      child: const Icon(Icons.info_outline),
-                    )
-                  ],
-                );
-              },
+                      )
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    GetIt.I<NavigationController>()
+                        .gotoUpdateTodoScreen(widget.model);
+                  },
+                  child: const Icon(Icons.info_outline),
+                )
+              ],
             ),
           );
         },

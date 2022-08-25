@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logger/logger.dart';
 import 'package:todo_list/business/api/api.dart';
 import 'package:todo_list/models/todo_model.dart';
@@ -49,7 +50,7 @@ class BackApi implements Api {
         options: Options(
           headers: {
             "X-Last-Known-Revision": _revision,
-            "Authorization": "Bearer Odonwell",
+            "Authorization": "Bearer ${dotenv.env["TODO_TOKEN"]}",
           },
           method: method.toUpperCase(),
         ),

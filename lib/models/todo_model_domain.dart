@@ -13,5 +13,6 @@ class TodoModelDomain with _$TodoModelDomain {
     required DateTime? deadline,
     required DateTime changedAt,
     required DateTime createdAt,
+    required String lastUpdatedBy,
   }) = _TodoModelDomain;
 }

@@ -8,11 +8,12 @@ import 'package:todo_list/components/shared/custom_text_field.dart';
 import 'package:todo_list/components/shared/date_picker.dart';
 import 'package:todo_list/components/shared/importance_dropdown.dart';
 import 'package:todo_list/components/shared/action_button.dart';
-import 'package:todo_list/models/todo_model.dart';
 import 'package:todo_list/navigation/navigation_controller.dart';
 import 'package:todo_list/themes/dark_theme.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../models/todo_model_domain.dart';
 
 class TodoFormProvider extends ChangeNotifier {
   TextEditingController controller = TextEditingController();
@@ -20,7 +21,7 @@ class TodoFormProvider extends ChangeNotifier {
 
   TodoFormProvider();
 
-  TodoFormProvider.fromOldModel(TodoModel model) {
+  TodoFormProvider.fromOldModel(TodoModelDomain model) {
     controller.text = model.text;
     _importance = model.importance;
     _deadline = model.deadline;
@@ -56,7 +57,7 @@ class TodoFormProvider extends ChangeNotifier {
 }
 
 class UpdateTodoScreen extends StatefulWidget {
-  final TodoModel? model;
+  final TodoModelDomain? model;
 
   const UpdateTodoScreen({this.model, Key? key}) : super(key: key);
 
@@ -105,24 +106,30 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                       onPress: () async {
                         if (provider.controller.text.isEmpty) return;
                         if (widget.model == null) {
-                          todoProvider.addItem(TodoModel(
-                            id: const Uuid().v4(),
-                            lastUpdatedBy:
-                                (await PlatformDeviceId.getDeviceId) ??
-                                    const Uuid().v4(),
-                            text: provider.controller.text,
-                            done: false,
-                            importance: provider.importance,
-                            deadline: provider.deadline,
-                            createdAt: DateTime.now(),
-                            changedAt: DateTime.now(),
-                          ));
+                          todoProvider.addItem(
+                            TodoModelDomain(
+                              id: const Uuid().v4(),
+                              lastUpdatedBy:
+                                  (await PlatformDeviceId.getDeviceId) ??
+                                      const Uuid().v4(),
+                              text: provider.controller.text,
+                              done: false,
+                              importance: provider.importance,
+                              deadline: provider.deadline,
+                              createdAt: DateTime.now(),
+                              changedAt: DateTime.now(),
+                              color: null,
+                            ),
+                          );
                         } else {
-                          todoProvider.updateItem(widget.model!
-                            ..text = provider.controller.text
-                            ..deadline = provider.deadline
-                            ..importance = provider.importance
-                            ..changedAt = DateTime.now());
+                          todoProvider.updateItem(
+                            widget.model!.copyWith(
+                              text: provider.controller.text,
+                              deadline: provider.deadline,
+                              importance: provider.importance,
+                              changedAt: DateTime.now(),
+                            ),
+                          );
                         }
                         _routerController.gotoTodoList();
                       },

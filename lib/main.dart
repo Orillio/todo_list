@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:logger/logger.dart';
@@ -48,6 +49,8 @@ Future noZonedGuardedMain({bool testEnvironment = false}) async {
   TodoAppServices.registerRemoteTasksRepository();
   TodoAppServices.registerGoRouterController();
   TodoAppServices.registerFirebaseAnalytics();
+
+  await dotenv.load(fileName: ".env");
 
   runApp(const MyApp());
 }

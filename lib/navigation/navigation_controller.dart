@@ -2,7 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:todo_list/models/todo_model.dart';
+import 'package:todo_list/models/todo_model_domain.dart';
 import 'package:todo_list/navigation/animations/sliding_backward_page.dart';
 import 'package:todo_list/screens/todo_screen.dart';
 import 'package:todo_list/screens/update_todo_screen.dart';
@@ -11,7 +11,7 @@ import 'animations/scale_page.dart';
 
 class ApplicationConfiguration {
   final bool _isTodoList;
-  TodoModel? _todoModel;
+  TodoModelDomain? _todoModel;
 
   bool get isTodoList => _isTodoList;
   bool get isCreatePage => !_isTodoList && _todoModel == null;
@@ -21,7 +21,7 @@ class ApplicationConfiguration {
 
   ApplicationConfiguration.todoList() : _isTodoList = true;
   ApplicationConfiguration.create() : _isTodoList = false;
-  ApplicationConfiguration.page(TodoModel model)
+  ApplicationConfiguration.page(TodoModelDomain model)
       : _isTodoList = false,
         _todoModel = model;
 }
@@ -72,7 +72,7 @@ class TodoRouterDelegate extends RouterDelegate<ApplicationConfiguration>
         ChangeNotifier,
         PopNavigatorRouterDelegateMixin<ApplicationConfiguration> {
   bool _isTodoList;
-  TodoModel? _todoModel;
+  TodoModelDomain? _todoModel;
 
   TodoRouterDelegate(this._isTodoList, this._todoModel);
 
@@ -130,7 +130,7 @@ class TodoRouterDelegate extends RouterDelegate<ApplicationConfiguration>
     return Future.value();
   }
 
-  void gotoUpdateTodoScreen(TodoModel parameter) {
+  void gotoUpdateTodoScreen(TodoModelDomain parameter) {
     _isTodoList = false;
     _todoModel = parameter;
     notifyListeners();
@@ -159,7 +159,7 @@ class NavigationController {
     parser = TodoRouterInformationParser();
   }
 
-  void gotoUpdateTodoScreen(TodoModel parameter) =>
+  void gotoUpdateTodoScreen(TodoModelDomain parameter) =>
       delegate.gotoUpdateTodoScreen(parameter);
 
   void gotoCreateTodoScreen() => delegate.gotoCreateTodoScreen();

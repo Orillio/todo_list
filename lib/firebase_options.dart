@@ -63,7 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '591905397678',
     projectId: 'done-a9dfe',
     storageBucket: 'done-a9dfe.appspot.com',
-    iosClientId: '591905397678-7h2ks97p6un6tahnhrtdg2b6s9e8dkhi.apps.googleusercontent.com',
+    iosClientId:
+        '591905397678-7h2ks97p6un6tahnhrtdg2b6s9e8dkhi.apps.googleusercontent.com',
     iosBundleId: 'com.testing.todoList',
   );
 }

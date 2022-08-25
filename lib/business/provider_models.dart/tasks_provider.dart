@@ -4,12 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:todo_list/models/todo_model.dart';
+import 'package:todo_list/models/todo_model_domain.dart';
 import '../repository/local_tasks_repository.dart';
 import '../repository/remote_tasks_repository.dart';
 
 class TasksProvider with ChangeNotifier {
-  List<TodoModel>? _tasks;
-  List<TodoModel>? get tasks => _tasks;
+  List<TodoModelDomain> _tasks = [];
+  List<TodoModelDomain> get tasks => _tasks;
+
+  bool _isLoaded = false;
+  bool get isLoaded => _isLoaded;
 
   late RemoteTasksRepository _remoteRepository;
   late LocalTasksRepository _localRepository;
@@ -20,7 +24,7 @@ class TasksProvider with ChangeNotifier {
     _analytics = GetIt.I<FirebaseAnalytics>();
   }
 
-  Future<List<TodoModel>> getTodoList() async {
+  Future<void> fetchTodoList() async {
     try {
       var remoteRevision = await _remoteRepository.getRevision();
       var localRevision = await _localRepository.getRevision();
@@ -34,53 +38,95 @@ class TasksProvider with ChangeNotifier {
       }
       _localRepository.setRevision(remoteRevision);
 
-      _tasks = List.from(await _localRepository.getTodoList());
-      return tasks!;
+      _tasks = List.from(
+        (await _localRepository.getTodoList()).toTodoModelDomainList(),
+      );
+      _isLoaded = true;
+      notifyListeners();
     } catch (e) {
-      _tasks = List.from(await _localRepository.getTodoList());
-      return _tasks!;
+      _tasks = List.from(
+        (await _localRepository.getTodoList()).toTodoModelDomainList(),
+      );
+      _isLoaded = true;
+      notifyListeners();
     }
   }
 
-  Future addItem(TodoModel item) async {
-    await _localRepository.addItem(item);
-    _tasks?.add(item);
+  Future addItem(TodoModelDomain item) async {
+    await _localRepository.addItem(item.toTodoModel());
+    _tasks = List.from([..._tasks, item]);
     notifyListeners();
 
     try {
-      await _remoteRepository.addItem(item);
+      await _remoteRepository.addItem(item.toTodoModel());
       _analytics.logEvent(name: 'add_todo');
     } catch (e) {
       Logger().e("Failed to add item on server");
     }
   }
 
-  Future deleteItem(TodoModel item, {bool needRebuild = false}) async {
-    await _localRepository.deleteItem(item);
-    _tasks?.remove(item);
+  Future deleteItem(TodoModelDomain item, {bool needRebuild = false}) async {
+    await _localRepository.deleteItem(item.toTodoModel());
+    _tasks = List.from(_tasks);
+    _tasks.remove(item);
+    if (needRebuild) notifyListeners();
 
     try {
-      await _remoteRepository.deleteItem(item);
+      await _remoteRepository.deleteItem(item.toTodoModel());
       _analytics.logEvent(name: "remove_todo");
     } catch (e) {
       Logger().e("Failed to delete item on server");
     }
-    if (needRebuild) notifyListeners();
   }
 
-  Future updateItem(TodoModel item) async {
-    _localRepository.updateItem(item);
-    _tasks?.firstWhere((element) => element.id == item.id).pasteFromOther(item);
+  Future updateItem(TodoModelDomain item) async {
+    _localRepository.updateItem(item.toTodoModel());
+    _tasks = List.from(_tasks);
+    var index = _tasks.indexWhere((element) => element.id == item.id);
+    _tasks.removeAt(index);
+    _tasks.insert(index, item);
     notifyListeners();
 
     try {
-      await _remoteRepository.updateItem(item);
+      await _remoteRepository.updateItem(item.toTodoModel());
       _analytics.logEvent(name: "update_todo");
     } on DioError {
       Logger().e("Failed to update item on server\n");
     }
   }
 
-  int get totalItems => _tasks?.length ?? 0;
-  int get itemsDone => _tasks?.where((e) => e.done).length ?? 0;
+  int get totalItems => _tasks.length;
+  int get itemsDone => _tasks.where((e) => e.done).length;
+}
+
+extension TodoModelListExt on List<TodoModel> {
+  List<TodoModelDomain> toTodoModelDomainList() {
+    return map((e) {
+      return TodoModelDomain(
+        id: e.id,
+        text: e.text,
+        color: e.color,
+        importance: e.importance,
+        done: e.done,
+        deadline: e.deadline,
+        changedAt: e.changedAt,
+        createdAt: e.createdAt,
+        lastUpdatedBy: e.lastUpdatedBy,
+      );
+    }).toList();
+  }
+}
+
+extension TodoModelDomainExt on TodoModelDomain {
+  TodoModel toTodoModel() {
+    return TodoModel(
+      importance: importance,
+      id: id,
+      text: text,
+      done: done,
+      changedAt: changedAt,
+      createdAt: createdAt,
+      lastUpdatedBy: lastUpdatedBy,
+    );
+  }
 }

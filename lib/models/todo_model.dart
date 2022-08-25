@@ -34,26 +34,6 @@ class TodoModel extends HiveObject {
     this.deadline,
     this.color,
   });
-  TodoModel changeFields({
-    String? id,
-    String? text,
-    String? color,
-    String? importance,
-    bool? done,
-    DateTime? deadline,
-    DateTime? changedAt,
-    DateTime? createdAt,
-  }) {
-    this.id = id ?? this.id;
-    this.text = text ?? this.text;
-    this.color = color ?? this.color;
-    this.importance = importance ?? this.importance;
-    this.done = done ?? this.done;
-    this.deadline = deadline ?? this.deadline;
-    this.changedAt = changedAt ?? this.changedAt;
-    this.createdAt = createdAt ?? this.createdAt;
-    return this;
-  }
 
   TodoModel pasteFromOther(TodoModel model) {
     id = model.id;
