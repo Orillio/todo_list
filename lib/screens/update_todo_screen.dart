@@ -21,7 +21,7 @@ class TodoFormProvider extends ChangeNotifier {
 
   TodoFormProvider();
 
-  TodoFormProvider.fromOldModel(TodoModelDomain model) {
+  TodoFormProvider.fromOldModel(DomainTodoModel model) {
     controller.text = model.text;
     _importance = model.importance;
     _deadline = model.deadline;
@@ -57,7 +57,7 @@ class TodoFormProvider extends ChangeNotifier {
 }
 
 class UpdateTodoScreen extends StatefulWidget {
-  final TodoModelDomain? model;
+  final DomainTodoModel? model;
 
   const UpdateTodoScreen({this.model, Key? key}) : super(key: key);
 
@@ -107,7 +107,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                         if (provider.controller.text.isEmpty) return;
                         if (widget.model == null) {
                           todoProvider.addItem(
-                            TodoModelDomain(
+                            DomainTodoModel(
                               id: const Uuid().v4(),
                               lastUpdatedBy:
                                   (await PlatformDeviceId.getDeviceId) ??

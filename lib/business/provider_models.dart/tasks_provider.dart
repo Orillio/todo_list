@@ -9,8 +9,8 @@ import '../repository/local_tasks_repository.dart';
 import '../repository/remote_tasks_repository.dart';
 
 class TasksProvider with ChangeNotifier {
-  List<TodoModelDomain> _tasks = [];
-  List<TodoModelDomain> get tasks => _tasks;
+  List<DomainTodoModel> _tasks = [];
+  List<DomainTodoModel> get tasks => _tasks;
 
   bool _isLoaded = false;
   bool get isLoaded => _isLoaded;
@@ -52,7 +52,7 @@ class TasksProvider with ChangeNotifier {
     }
   }
 
-  Future addItem(TodoModelDomain item) async {
+  Future addItem(DomainTodoModel item) async {
     await _localRepository.addItem(item.toTodoModel());
     _tasks = List.from([..._tasks, item]);
     notifyListeners();
@@ -65,7 +65,7 @@ class TasksProvider with ChangeNotifier {
     }
   }
 
-  Future deleteItem(TodoModelDomain item, {bool needRebuild = false}) async {
+  Future deleteItem(DomainTodoModel item, {bool needRebuild = false}) async {
     await _localRepository.deleteItem(item.toTodoModel());
     _tasks = List.from(_tasks);
     _tasks.remove(item);
@@ -79,7 +79,7 @@ class TasksProvider with ChangeNotifier {
     }
   }
 
-  Future updateItem(TodoModelDomain item) async {
+  Future updateItem(DomainTodoModel item) async {
     _localRepository.updateItem(item.toTodoModel());
     _tasks = List.from(_tasks);
     var index = _tasks.indexWhere((element) => element.id == item.id);
@@ -100,9 +100,9 @@ class TasksProvider with ChangeNotifier {
 }
 
 extension TodoModelListExt on List<TodoModel> {
-  List<TodoModelDomain> toTodoModelDomainList() {
+  List<DomainTodoModel> toTodoModelDomainList() {
     return map((e) {
-      return TodoModelDomain(
+      return DomainTodoModel(
         id: e.id,
         text: e.text,
         color: e.color,
@@ -117,7 +117,7 @@ extension TodoModelListExt on List<TodoModel> {
   }
 }
 
-extension TodoModelDomainExt on TodoModelDomain {
+extension TodoModelDomainExt on DomainTodoModel {
   TodoModel toTodoModel() {
     return TodoModel(
       importance: importance,

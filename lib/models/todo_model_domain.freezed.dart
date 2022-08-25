@@ -27,14 +27,14 @@ mixin _$TodoModelDomain {
   String get lastUpdatedBy => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $TodoModelDomainCopyWith<TodoModelDomain> get copyWith =>
+  $TodoModelDomainCopyWith<DomainTodoModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $TodoModelDomainCopyWith<$Res> {
   factory $TodoModelDomainCopyWith(
-          TodoModelDomain value, $Res Function(TodoModelDomain) then) =
+          DomainTodoModel value, $Res Function(DomainTodoModel) then) =
       _$TodoModelDomainCopyWithImpl<$Res>;
   $Res call(
       {String id,
@@ -53,9 +53,9 @@ class _$TodoModelDomainCopyWithImpl<$Res>
     implements $TodoModelDomainCopyWith<$Res> {
   _$TodoModelDomainCopyWithImpl(this._value, this._then);
 
-  final TodoModelDomain _value;
+  final DomainTodoModel _value;
   // ignore: unused_field
-  final $Res Function(TodoModelDomain) _then;
+  final $Res Function(DomainTodoModel) _then;
 
   @override
   $Res call({
@@ -268,7 +268,7 @@ class _$_TodoModelDomain implements _TodoModelDomain {
       __$$_TodoModelDomainCopyWithImpl<_$_TodoModelDomain>(this, _$identity);
 }
 
-abstract class _TodoModelDomain implements TodoModelDomain {
+abstract class _TodoModelDomain implements DomainTodoModel {
   const factory _TodoModelDomain(
       {required final String id,
       required final String text,

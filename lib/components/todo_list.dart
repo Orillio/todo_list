@@ -54,7 +54,7 @@ class _TodoListState extends State<TodoList> {
                       onFocusChange: (value) async {
                         if (!value && newItemTextContoller.text.isNotEmpty) {
                           todoProvider.addItem(
-                            TodoModelDomain(
+                            DomainTodoModel(
                               id: const Uuid().v4(),
                               lastUpdatedBy:
                                   (await PlatformDeviceId.getDeviceId) ??

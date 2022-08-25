@@ -3,8 +3,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'todo_model_domain.freezed.dart';
 
 @freezed
-class TodoModelDomain with _$TodoModelDomain {
-  const factory TodoModelDomain({
+class DomainTodoModel with _$TodoModelDomain {
+  const factory DomainTodoModel({
     required String id,
     required String text,
     required String? color,

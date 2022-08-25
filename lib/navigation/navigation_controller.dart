@@ -11,7 +11,7 @@ import 'animations/scale_page.dart';
 
 class ApplicationConfiguration {
   final bool _isTodoList;
-  TodoModelDomain? _todoModel;
+  DomainTodoModel? _todoModel;
 
   bool get isTodoList => _isTodoList;
   bool get isCreatePage => !_isTodoList && _todoModel == null;
@@ -21,7 +21,7 @@ class ApplicationConfiguration {
 
   ApplicationConfiguration.todoList() : _isTodoList = true;
   ApplicationConfiguration.create() : _isTodoList = false;
-  ApplicationConfiguration.page(TodoModelDomain model)
+  ApplicationConfiguration.page(DomainTodoModel model)
       : _isTodoList = false,
         _todoModel = model;
 }
@@ -72,7 +72,7 @@ class TodoRouterDelegate extends RouterDelegate<ApplicationConfiguration>
         ChangeNotifier,
         PopNavigatorRouterDelegateMixin<ApplicationConfiguration> {
   bool _isTodoList;
-  TodoModelDomain? _todoModel;
+  DomainTodoModel? _todoModel;
 
   TodoRouterDelegate(this._isTodoList, this._todoModel);
 
@@ -130,7 +130,7 @@ class TodoRouterDelegate extends RouterDelegate<ApplicationConfiguration>
     return Future.value();
   }
 
-  void gotoUpdateTodoScreen(TodoModelDomain parameter) {
+  void gotoUpdateTodoScreen(DomainTodoModel parameter) {
     _isTodoList = false;
     _todoModel = parameter;
     notifyListeners();
@@ -159,7 +159,7 @@ class NavigationController {
     parser = TodoRouterInformationParser();
   }
 
-  void gotoUpdateTodoScreen(TodoModelDomain parameter) =>
+  void gotoUpdateTodoScreen(DomainTodoModel parameter) =>
       delegate.gotoUpdateTodoScreen(parameter);
 
   void gotoCreateTodoScreen() => delegate.gotoCreateTodoScreen();

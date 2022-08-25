@@ -10,7 +10,7 @@ import 'package:todo_list/navigation/navigation_controller.dart';
 import 'package:todo_list/themes/dark_theme.dart';
 
 class TodoListItem extends StatefulWidget {
-  final TodoModelDomain model;
+  final DomainTodoModel model;
 
   const TodoListItem({required this.model, Key? key}) : super(key: key);
 
