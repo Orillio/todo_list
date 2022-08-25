@@ -19,12 +19,18 @@ class TodoList extends StatefulWidget {
 class _TodoListState extends State<TodoList> {
   var newItemTextContoller = TextEditingController();
 
-  Future<List<TodoModel>>? todoList;
+  late Future<List<TodoModel>> todoList;
+
+  @override
+  void initState() {
+    super.initState();
+    var todoProvider = context.read<TasksProvider>();
+    todoProvider.getTodoList();
+
+  }
 
   @override
   Widget build(BuildContext context) {
-    var todoProvider = context.read<TasksProvider>();
-    todoList ??= todoProvider.getTodoList();
 
     return FutureBuilder<List<TodoModel>>(
       future: todoList,
@@ -44,9 +50,7 @@ class _TodoListState extends State<TodoList> {
               color: Theme.of(context).colorScheme.secondary,
               child: Consumer<VisibilityChangeNotifier>(
                   builder: (context, visibilityProvider, _) {
-                context.select<TasksProvider, int>((value) {
-                  return value.totalItems;
-                });
+                var todoProvider = context.watch<TasksProvider>();
                 return ListView.builder(
                   padding: const EdgeInsets.all(0),
                   physics: const NeverScrollableScrollPhysics(),

@@ -122,7 +122,7 @@ class _TodoListItemState extends State<TodoListItem> {
           return true;
         }
       },
-      key: UniqueKey(),
+      key: ValueKey(widget.model.id),
       child: OrientationBuilder(
         builder: (context, orientation) {
           return Padding(

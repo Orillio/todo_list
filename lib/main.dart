@@ -47,6 +47,7 @@ Future noZonedGuardedMain({bool testEnvironment = false}) async {
   TodoAppServices.registerLocalTasksRepository();
   TodoAppServices.registerRemoteTasksRepository();
   TodoAppServices.registerGoRouterController();
+  TodoAppServices.registerFirebaseAnalytics();
 
   runApp(const MyApp());
 }

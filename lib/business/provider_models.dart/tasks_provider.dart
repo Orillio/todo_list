@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
@@ -12,10 +13,11 @@ class TasksProvider with ChangeNotifier {
 
   late RemoteTasksRepository _remoteRepository;
   late LocalTasksRepository _localRepository;
-
+  late FirebaseAnalytics _analytics;
   TasksProvider() {
     _remoteRepository = GetIt.I<RemoteTasksRepository>();
     _localRepository = GetIt.I<LocalTasksRepository>();
+    _analytics = GetIt.I<FirebaseAnalytics>();
   }
 
   Future<List<TodoModel>> getTodoList() async {
@@ -47,6 +49,7 @@ class TasksProvider with ChangeNotifier {
 
     try {
       await _remoteRepository.addItem(item);
+      _analytics.logEvent(name: 'add_todo');
     } catch (e) {
       Logger().e("Failed to add item on server");
     }
@@ -58,6 +61,7 @@ class TasksProvider with ChangeNotifier {
 
     try {
       await _remoteRepository.deleteItem(item);
+      _analytics.logEvent(name: "remove_todo");
     } catch (e) {
       Logger().e("Failed to delete item on server");
     }
@@ -71,6 +75,7 @@ class TasksProvider with ChangeNotifier {
 
     try {
       await _remoteRepository.updateItem(item);
+      _analytics.logEvent(name: "update_todo");
     } on DioError {
       Logger().e("Failed to update item on server\n");
     }

@@ -1,5 +1,7 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:todo_list/models/todo_model.dart';
 import 'package:todo_list/navigation/animations/sliding_backward_page.dart';
 import 'package:todo_list/screens/todo_screen.dart';
@@ -106,7 +108,10 @@ class TodoRouterDelegate extends RouterDelegate<ApplicationConfiguration>
   Widget build(BuildContext context) {
     return Navigator(
       key: navigatorKey,
-      observers: [HeroController()],
+      observers: [
+        HeroController(),
+        FirebaseAnalyticsObserver(analytics: GetIt.I<FirebaseAnalytics>())
+      ],
       onPopPage: (route, result) {
         return route.didPop(result);
       },
