@@ -16,9 +16,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import './firebase_options.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'business/utils/flavors_service.dart';
 import 'models/todo_model.dart';
 
-Future noZonedGuardedMain({bool testEnvironment = false}) async {
+Future noZonedGuardedMain({required FlavorConfig config}) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -49,16 +50,17 @@ Future noZonedGuardedMain({bool testEnvironment = false}) async {
   TodoAppServices.registerRemoteTasksRepository();
   TodoAppServices.registerGoRouterController();
   TodoAppServices.registerFirebaseAnalytics();
+  TodoAppServices.registerFlavorConfig(config);
 
   await dotenv.load(fileName: ".env");
 
   runApp(const MyApp());
 }
 
-void main() {
+void mainCommon({required FlavorConfig config}) {
   runZonedGuarded<Future<void>>(
     () async {
-      noZonedGuardedMain();
+      noZonedGuardedMain(config: config);
     },
     (error, stack) =>
         FirebaseCrashlytics.instance.recordError(error, stack, fatal: true),
@@ -73,7 +75,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var navigationController = GetIt.I<NavigationController>();
-
+    var flavorConfig = GetIt.I<FlavorConfig>();
     //Wrapping MaterialApp in MultiProvider to access models in all routes.
     return MultiProvider(
       providers: [
@@ -92,7 +94,7 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: flavorConfig.isTestEnvironment,
         title: 'TodoList',
         themeMode: ThemeMode.system,
         darkTheme: darkTheme,

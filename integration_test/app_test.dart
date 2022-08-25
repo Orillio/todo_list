@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:todo_list/main.dart' as app;
+import 'package:todo_list/business/utils/flavors_service.dart';
+import 'package:todo_list/main_common.dart' as app;
 
 void main() {
   group("App Testing", () {
     IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
     testWidgets("add new item", (tester) async {
-      await app.noZonedGuardedMain();
+      await app.noZonedGuardedMain(config: FlavorConfig(true));
       await tester.pumpAndSettle();
 
       var button = find.byIcon(Icons.add);
