@@ -45,28 +45,30 @@ class _TodoScreenState extends State<TodoScreen> {
           onRefresh: () async {},
           child: ChangeNotifierProvider(
             create: (_) => VisibilityChangeNotifier(),
-            child: OrientationBuilder(builder: (context, orientation) {
-              double minExt = orientation == Orientation.portrait ? 120 : 70;
-              double maxExt = orientation == Orientation.portrait ? 230 : 140;
-              return CustomScrollView(
-                slivers: [
-                  SliverPersistentHeader(
-                    pinned: true,
-                    delegate: TodoListHeader(
-                      minimumExtent: minExt,
-                      maximumExtent: maxExt,
+            child: OrientationBuilder(
+              builder: (context, orientation) {
+                double minExt = orientation == Orientation.portrait ? 120 : 70;
+                double maxExt = orientation == Orientation.portrait ? 230 : 140;
+                return CustomScrollView(
+                  slivers: [
+                    SliverPersistentHeader(
+                      pinned: true,
+                      delegate: TodoListHeader(
+                        minimumExtent: minExt,
+                        maximumExtent: maxExt,
+                      ),
                     ),
-                  ),
-                  const SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          top: 20, bottom: 50, left: 8, right: 8),
-                      child: TodoList(),
+                    const SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: 20, bottom: 50, left: 8, right: 8),
+                        child: TodoList(),
+                      ),
                     ),
-                  ),
-                ],
-              );
-            }),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),

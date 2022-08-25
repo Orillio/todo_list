@@ -37,103 +37,107 @@ class TodoListHeader extends SliverPersistentHeaderDelegate {
     double labelOpacity = negativeRelationValue;
     double backgroundOpacity = positiveRelationValue;
 
-    return OrientationBuilder(builder: (context, orientation) {
-      return Material(
-        animationDuration: Duration.zero,
-        color: Theme.of(context).scaffoldBackgroundColor,
-        shadowColor:
-            Theme.of(context).canvasColor.withOpacity(0.4 * backgroundOpacity),
-        elevation: 5,
-        child: Stack(
-          children: [
-            Positioned(
-              bottom: 0,
-              right: 0,
-              left: 0,
-              child: Container(
-                padding: MediaQuery.of(context).orientation ==
-                        Orientation.portrait
-                    ? const EdgeInsets.only(bottom: 26, right: 25, left: 65)
-                    : const EdgeInsets.only(bottom: 26, right: 45, left: 105),
-                height: maxExtent,
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Transform.translate(
-                        offset: Offset(titleXOffset, titleYOffset),
-                        child: Text(
-                          AppLocalizations.of(context)!.myTodos,
-                          style: TextStyle(
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        return Material(
+          animationDuration: Duration.zero,
+          color: Theme.of(context).scaffoldBackgroundColor,
+          shadowColor: Theme.of(context)
+              .canvasColor
+              .withOpacity(0.4 * backgroundOpacity),
+          elevation: 5,
+          child: Stack(
+            children: [
+              Positioned(
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: Container(
+                  padding: MediaQuery.of(context).orientation ==
+                          Orientation.portrait
+                      ? const EdgeInsets.only(bottom: 26, right: 25, left: 65)
+                      : const EdgeInsets.only(bottom: 26, right: 45, left: 105),
+                  height: maxExtent,
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Transform.translate(
+                          offset: Offset(titleXOffset, titleYOffset),
+                          child: Text(
+                            AppLocalizations.of(context)!.myTodos,
+                            style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: titleFontSize,
                               color: Theme.of(context)
                                   .textTheme
                                   .titleMedium!
-                                  .color),
+                                  .color,
+                            ),
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Transform.translate(
-                            offset: Offset(labelXOffset, labelYOffset),
-                            child: Opacity(
-                              opacity: labelOpacity,
-                              child: MediumLabel(
-                                "${AppLocalizations.of(context)!.itemsDone} - ${model.itemsDone}",
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Transform.translate(
+                              offset: Offset(labelXOffset, labelYOffset),
+                              child: Opacity(
+                                opacity: labelOpacity,
+                                child: MediumLabel(
+                                  "${AppLocalizations.of(context)!.itemsDone} - ${model.itemsDone}",
+                                ),
                               ),
                             ),
-                          ),
-                          Transform.translate(
-                            offset: MediaQuery.of(context).orientation ==
-                                    Orientation.landscape
-                                ? Offset(visibilityXOffset, 0)
-                                : const Offset(0, 0),
-                            child: GestureDetector(
-                              onTap: () {
-                                visibilityModel.isVisible =
-                                    !visibilityModel.isVisible;
-                              },
-                              child: Builder(
-                                builder: (context) {
-                                  if (visibilityModel.isVisible) {
-                                    return Icon(
-                                      Icons.visibility,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .displayLarge!
-                                          .color,
-                                    );
-                                  } else {
-                                    return Icon(
-                                      Icons.visibility_off,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .displayLarge!
-                                          .color,
-                                    );
-                                  }
+                            Transform.translate(
+                              offset: MediaQuery.of(context).orientation ==
+                                      Orientation.landscape
+                                  ? Offset(visibilityXOffset, 0)
+                                  : const Offset(0, 0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  visibilityModel.isVisible =
+                                      !visibilityModel.isVisible;
                                 },
+                                child: Builder(
+                                  builder: (context) {
+                                    if (visibilityModel.isVisible) {
+                                      return Icon(
+                                        Icons.visibility,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .displayLarge!
+                                            .color,
+                                      );
+                                    } else {
+                                      return Icon(
+                                        Icons.visibility_off,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .displayLarge!
+                                            .color,
+                                      );
+                                    }
+                                  },
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      );
-    });
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override

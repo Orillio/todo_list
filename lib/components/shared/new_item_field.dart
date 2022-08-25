@@ -38,15 +38,16 @@ class _NewItemFieldState extends State<NewItemField> {
                   _navController.gotoCreateTodoScreen();
                 },
                 child: TextField(
-                    controller: widget.controller,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      hintText: AppLocalizations.of(context)!.newItem,
-                      hintStyle: Theme.of(context).textTheme.labelMedium,
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.only(right: 30),
-                    ),
-                    style: Theme.of(context).textTheme.titleMedium),
+                  controller: widget.controller,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    hintText: AppLocalizations.of(context)!.newItem,
+                    hintStyle: Theme.of(context).textTheme.labelMedium,
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.only(right: 30),
+                  ),
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
               ),
             ),
           ),

@@ -42,11 +42,12 @@ class _DatePickerState extends State<DatePicker> {
           onChanged: (newVal) async {
             if (newVal) {
               var date = await showDatePicker(
-                  initialEntryMode: DatePickerEntryMode.calendarOnly,
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime(2100));
+                initialEntryMode: DatePickerEntryMode.calendarOnly,
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime.now(),
+                lastDate: DateTime(2100),
+              );
               if (date != null) {
                 model.deadline = date;
                 model.deadlineString = DateFormat.yMMMd("ru").format(date);

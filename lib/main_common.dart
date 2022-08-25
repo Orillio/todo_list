@@ -51,7 +51,6 @@ Future noZonedGuardedMain({required FlavorConfig config}) async {
   TodoAppServices.registerFirebaseAnalytics();
   TodoAppServices.registerFlavorConfig(config);
 
-
   runApp(const MyApp());
 }
 
