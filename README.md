@@ -9,8 +9,11 @@
 - Реализован свайп. Вправо - для отметки "Выполнено", Влево - для удаления заметки.
 - Скрытие выполненных дел.
 - Интернационализация (Работает на Русском и Английском языках).
-
-Приложение пока что не поддерживает оффлайн взаимодействие.
+- Поддержка редактирования с разных устройств
+- Оффлайн взаимодействие
+- Deeplinks
+- Светлая и темная темы
+- Поддержка планшетов и landscape ориентации
 
 Фото приложения:
 <div style="display: flex; flex-direction: row;">
@@ -19,5 +22,4 @@
   <img src="https://user-images.githubusercontent.com/62881333/183106931-95ac6b09-3876-419f-94bb-34356df1dbaa.png" width="200" />
 </div>
 
-#
-[Ссылка на release-apk](https://github.com/Orillio/todo_list/files/9270589/app-release.apk.zip)
+[Ссылка на release apk](https://github.com/Orillio/todo_list/files/9428020/app-todo_release-release.apk.zip)
