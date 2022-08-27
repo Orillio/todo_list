@@ -59,7 +59,7 @@ class TodoRouterInformationParser
     }
     if (configuration.isTodoPage) {
       return RouteInformation(
-        location: "/${configuration._todoModel?.id ?? ""}",
+        location: "/${configuration._todoModel!.id}",
         state: configuration._todoModel as Object,
       );
     }
@@ -143,7 +143,6 @@ class TodoRouterDelegate extends RouterDelegate<ApplicationConfiguration>
   }
 
   void gotoTodoList() async {
-    await popRoute();
     _isTodoList = true;
     _todoModel = null;
     notifyListeners();

@@ -54,7 +54,7 @@ class TasksProvider with ChangeNotifier {
 
   Future addItem(DomainTodoModel item) async {
     await _localRepository.addItem(item.toTodoModel());
-    _tasks = List.from([..._tasks, item]);
+    _tasks = [..._tasks, item];
     notifyListeners();
 
     try {
