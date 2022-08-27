@@ -1,0 +1,14 @@
+{
+    "myTodos": "Мои дела",
+    "itemsDone": "Выполнено",
+    "newItem": "Новое",
+    "save": "Сохранить",
+    "whatToDo": "Что нужно сделать?",
+    "importance": "Важность",
+    "importanceLow": "Нет",
+    "importanceBasic": "Низкий",
+    "importanceHigh": "Высокий",
+    "removeItem": "Удалить",
+    "deadline": "Сделать до",
+    "invalidTodoMessage": "Невозможно сохранить заметку без текста"
+}
