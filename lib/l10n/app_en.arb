@@ -9,5 +9,6 @@
     "importanceBasic": "Basic",
     "importanceHigh": "High",
     "removeItem": "Remove",
-    "deadline": "Deadline"
+    "deadline": "Deadline",
+    "invalidTodoMessage": "Unable to save todo without text"
 }

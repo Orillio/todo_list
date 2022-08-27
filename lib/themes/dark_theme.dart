@@ -4,7 +4,10 @@ ThemeData darkTheme = ThemeData(
   buttonTheme: const ButtonThemeData(buttonColor: ConstDarkColors.colorBlue),
   scaffoldBackgroundColor: ConstDarkColors.backPrimary,
   brightness: Brightness.dark,
-  colorScheme: const ColorScheme.dark(secondary: ConstDarkColors.backSecondary),
+  colorScheme: ColorScheme.dark(
+    secondary: ConstDarkColors.backSecondary,
+    background: Colors.grey.shade900,
+  ),
   primaryColorDark: ConstDarkColors.backPrimary,
   appBarTheme:
       const AppBarTheme(backgroundColor: ConstDarkColors.backSecondary),
@@ -49,8 +52,10 @@ ThemeData lightTheme = ThemeData(
   buttonTheme: const ButtonThemeData(buttonColor: ConstLightColors.colorBlue),
   scaffoldBackgroundColor: ConstLightColors.backPrimary,
   brightness: Brightness.light,
-  colorScheme:
-      const ColorScheme.light(secondary: ConstLightColors.backSecondary),
+  colorScheme: ColorScheme.light(
+    secondary: ConstLightColors.backSecondary,
+    background: Colors.grey.shade800,
+  ),
   primaryColorDark: ConstLightColors.backPrimary,
   appBarTheme:
       const AppBarTheme(backgroundColor: ConstLightColors.backSecondary),

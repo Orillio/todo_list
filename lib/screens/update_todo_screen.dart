@@ -104,7 +104,24 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                     padding: const EdgeInsets.only(right: 5),
                     child: ActionButton(
                       onPress: () async {
-                        if (provider.controller.text.isEmpty) return;
+                        if (provider.controller.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                AppLocalizations.of(context)!
+                                    .invalidTodoMessage,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              action: SnackBarAction(
+                                label: "OK",
+                                onPressed: () {},
+                              ),
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.background,
+                            ),
+                          );
+                          return;
+                        }
                         if (widget.model == null) {
                           todoProvider.addItem(
                             DomainTodoModel(

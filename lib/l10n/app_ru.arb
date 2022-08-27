@@ -9,6 +9,6 @@
     "importanceBasic": "Низкий",
     "importanceHigh": "Высокий",
     "removeItem": "Удалить",
-    "deadline": "Сделать до"
-
+    "deadline": "Сделать до",
+    "invalidTodoMessage": "Невозможно сохранить заметку без текста"
 }
